@@ -51,7 +51,8 @@ var afterMap = new mapboxgl.Map({
     container: 'after',
     style: 'mapbox://styles/mikelmaron/cjj8sq1w63lum2rlqtfjow2hl',
     center: [0, 0],
-    zoom: 0
+    zoom: 0,
+    hash: true
 });
 
 var map = new mapboxgl.Compare(beforeMap, afterMap, {
