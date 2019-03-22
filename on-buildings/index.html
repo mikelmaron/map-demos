@@ -26,7 +26,7 @@ var map = new mapboxgl.Map({
 
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
-    layers: ['Ontario-bncpga'] // replace this with the name of the layer
+    layers: ['ontario-bncpga'] // replace this with the name of the layer
   });
 
   if (!features.length) {
@@ -35,14 +35,13 @@ map.on('click', function(e) {
 
   var feature = features[0];
 
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(feature.geometry.coordinates)
-    .setHTML('<p>' + turf.area(feature.geometry + '</p>')
-    .setLngLat(feature.geometry.coordinates)
+  var popup = new mapboxgl.Popup({ offset: [0, 0] })
+    .setLngLat(turf.centerOfMass(feature.geometry).geometry.coordinates)
+    .setHTML('<p>Area (m2) ' + Math.round(turf.area(feature.geometry)) + '</p>')
     .addTo(map);
 });
 </script>
 
 </body>
-</html>y>
+</html>
 </html>
