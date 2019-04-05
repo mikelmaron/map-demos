@@ -6,7 +6,6 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -19,14 +18,14 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw';
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mikelmaron/cjtk69mon0czd1fqii5i6wo3x', // stylesheet location
+    style: 'mapbox://styles/mikelmaron/cju45ofe413yo1fn0qbzykiyo', // stylesheet location
     center: [-78.74091,44.35617],
     zoom: 13
 });
-
+    
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
-    layers: ['ontario-bncpga'] // replace this with the name of the layer
+    layers: ['municpal-building-energy-use--agt8ze'] // replace this with the name of the layer
   });
 
   if (!features.length) {
@@ -36,8 +35,8 @@ map.on('click', function(e) {
   var feature = features[0];
 
   var popup = new mapboxgl.Popup({ offset: [0, 0] })
-    .setLngLat(turf.centerOfMass(feature.geometry).geometry.coordinates)
-    .setHTML('<p>Area (m2) ' + Math.round(turf.area(feature.geometry)) + '</p>')
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<p>hello</p>')
     .addTo(map);
 });
 </script>
