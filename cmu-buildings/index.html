@@ -4,6 +4,7 @@
     <meta charset='utf-8' />
     <title>Display a map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
     <style>
@@ -19,13 +20,40 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trb
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mikelmaron/cju45ofe413yo1fn0qbzykiyo', // stylesheet location
-    center: [-78.74091,44.35617],
+    center: [-79.977884,40.448718],
     zoom: 13
 });
-    
+
+const footprintOnClick = (lngLat) => {
+      var query = 'https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/' + lngLat[0] + ',' + lngLat[1] + '.json?layers=building&radius=200&limit=50&access_token=' + mapboxgl.accessToken;
+      // make the call to Tilequery API and parse the results
+      $.ajax({
+        method: 'GET',
+        url: query,
+      }).done(function(data) {
+        if (data.features.length > 0) {
+          map.addLayer({
+            'id': 'building',
+            'type': 'fill',
+            'source': {
+              'type': 'geojson',
+              'data': data
+
+            },
+            'layout': {},
+            'paint': {
+              'fill-color': '#088',
+              'fill-opacity': 0.8
+            }
+          });
+        }
+      });
+    }
+
+
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
-    layers: ['municpal-building-energy-use--agt8ze'] // replace this with the name of the layer
+    layers: ['municpal-building-energy-use-agt8ze'], // replace this with the name of the layer
   });
 
   if (!features.length) {
@@ -36,8 +64,37 @@ map.on('click', function(e) {
 
   var popup = new mapboxgl.Popup({ offset: [0, 0] })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML('<p>hello</p>')
+    .setHTML('<p>' + feature.properties['Property Name'] + "<br/>$" + feature.properties['Energy Cost ($)'] + '</p>')
     .addTo(map);
+
+
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['building'], // replace this with the name of the layer
+  });
+
+
+    if (!features.length) {
+      return;
+    }
+
+    var feature = features[0];
+
+    map.removeLayer('building-highlight');
+    map.addLayer({
+      'id': 'building-highlight',
+      'type': 'fill',
+      'source': {
+        'type': 'geojson',
+        'data': feature
+
+      },
+      'layout': {},
+      'paint': {
+        'fill-color': '#088',
+        'fill-opacity': 0.8
+      }
+    });
+
 });
 </script>
 
