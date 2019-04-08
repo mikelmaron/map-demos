@@ -23,33 +23,7 @@ var map = new mapboxgl.Map({
     center: [-79.977884,40.448718],
     zoom: 13
 });
-
-const footprintOnClick = (lngLat) => {
-      var query = 'https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/' + lngLat[0] + ',' + lngLat[1] + '.json?layers=building&radius=200&limit=50&access_token=' + mapboxgl.accessToken;
-      // make the call to Tilequery API and parse the results
-      $.ajax({
-        method: 'GET',
-        url: query,
-      }).done(function(data) {
-        if (data.features.length > 0) {
-          map.addLayer({
-            'id': 'building',
-            'type': 'fill',
-            'source': {
-              'type': 'geojson',
-              'data': data
-
-            },
-            'layout': {},
-            'paint': {
-              'fill-color': '#088',
-              'fill-opacity': 0.8
-            }
-          });
-        }
-      });
-    }
-
+map.addControl(new mapboxgl.NavigationControl());
 
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
@@ -67,22 +41,27 @@ map.on('click', function(e) {
     .setHTML('<p>' + feature.properties['Property Name'] + "<br/>$" + feature.properties['Energy Cost ($)'] + '</p>')
     .addTo(map);
 
+  map.flyTo({
+    center: feature.geometry.coordinates,
+    zoom: 16,
+  });
+
+  var height = feature.properties['Energy Cost ($)']
 
   var features = map.queryRenderedFeatures(e.point, {
     layers: ['building'], // replace this with the name of the layer
   });
 
+  if (!features.length) {
+    return;
+  }
 
-    if (!features.length) {
-      return;
-    }
+  var feature = features[0];
+  feature.properties['height'] = height / 100;
 
-    var feature = features[0];
-
-    map.removeLayer('building-highlight');
-    map.addLayer({
-      'id': 'building-highlight',
-      'type': 'fill',
+  map.addLayer({
+      'id': 'building-highlight-' + Date.now(),
+      'type': 'fill-extrusion',
       'source': {
         'type': 'geojson',
         'data': feature
@@ -90,10 +69,11 @@ map.on('click', function(e) {
       },
       'layout': {},
       'paint': {
-        'fill-color': '#088',
-        'fill-opacity': 0.8
+        'fill-extrusion-color': '#088',
+        'fill-extrusion-opacity': 0.8,
+        'fill-extrusion-height': ['get', 'height']
       }
-    });
+  });
 
 });
 </script>
