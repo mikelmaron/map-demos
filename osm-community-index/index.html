@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='robots' content='noindex, nofollow'>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        h2, h3 {
+            margin: 10px;
+            font-size: 1.2em;
+        }
+        h3 {
+            font-size: 1em;
+        }
+        p {
+            font-size: 0.85em;
+            margin: 10px;
+            text-align: left;
+        }
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            margin-right: 20px;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+            border-radius: 3px;
+        }
+        #map {
+            position:absolute;
+            top:0;
+            bottom:0;
+            width:100%;
+        }
+        #features {
+            top: 0;
+            height: 250px;
+            margin-top: 20px;
+            width: 250px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='map-overlay' id='features'><h2>OSM Communities</h2><div id='pd'><p></p></div></div>
+
+<script>
+
+// define access token
+mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw';
+
+//create map
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mikelmaron/ck0fhxqle2mo31ctas0153djr',
+    center: [0,0], 
+    zoom: 1 
+});
+
+// wait for map to load before adjusting it
+map.on('load', function() {
+
+    // make a pointer cursor
+    map.getCanvas().style.cursor = 'default';
+
+    // change info window on hover
+    map.on('click', function (e) {
+        var communities  = map.queryRenderedFeatures(e.point, {
+            layers: ['osm-community-index']
+        });
+
+        var inner = '';
+        communities.forEach(function(c) {
+          for (var p in c['properties']) {
+            var community = JSON.parse(c['properties'][p]);
+            inner += "<h3><strong><a href='" + community['url'] + "'>" + community['name'] + "</a></strong></h3>";
+          }
+        });
+
+        document.getElementById('pd').innerHTML = inner;
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+
