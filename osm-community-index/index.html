@@ -79,8 +79,11 @@ map.on('load', function() {
         var inner = '';
         communities.forEach(function(c) {
           for (var p in c['properties']) {
-            var community = JSON.parse(c['properties'][p]);
-            inner += "<h3><strong><a href='" + community['url'] + "'>" + community['name'] + "</a></strong></h3>";
+            try {
+              var community = JSON.parse(c['properties'][p]);
+              inner += "<h3><strong><a href='" + community['url'] + "'>" + community['name'] + "</a></strong></h3>";
+            } catch(Err) {
+            }
           }
         });
 
