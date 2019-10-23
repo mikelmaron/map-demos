@@ -71,7 +71,7 @@ var map = new mapboxgl.Map({
 // wait for map to load before adjusting it
 map.on('load', function() {
 
-    var dataURL = 'https://cdn.jsdelivr.net/gh/osmlab/osm-community-index@release/dist/combined.min.geojson';
+    var dataURL = 'https://cdn.jsdelivr.net/npm/osm-community-index@1/dist/combined.min.geojson';
     map.addSource('osm-community-index', { type: 'geojson', data: dataURL });
     map.addLayer({
       'id': 'osm-community-index',
@@ -94,7 +94,7 @@ map.on('load', function() {
           for (var p in c['properties']) {
             try {
               var community = JSON.parse(c['properties'][p]);
-              var iconURL = 'https://cdn.jsdelivr.net/gh/osmlab/osm-community-index@release/dist/img/' + community.type + '.svg';
+              var iconURL = 'https://cdn.jsdelivr.net/npm/osm-community-index@1/dist/img/' + community.type + '.svg';
 
               inner += '<div class="resource">'
                 + '<img class="icon" src="' + iconURL + '"/>'
