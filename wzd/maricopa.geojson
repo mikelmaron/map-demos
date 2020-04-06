@@ -1,0 +1,344 @@
+{
+  "Header": {
+			"timeStampUpdate": "2019-10-08T05:12:19.6045304-07:00",
+			"metadataURL": "mcdot-its.com/WZDx",
+			"versionNo": "1"
+		},
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "stroke": "#ff0000",
+        "stroke-width": 3,
+        "stroke-opacity": 1,
+        "wzFeatureType": "Work Zone",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "subidentifier": "TT0345;TCP_12;eastbound",
+        "startDateTime": "2019-01-20T06:35:00-07:00",
+        "startDateTimeVerification": "Verified",
+        "endDateTime": "2019-08-20T23:59:59-07:00",
+        "endDateTimeVerification": "Estimated",
+        "wz_status": "active",
+        "totalLanes": 2,
+        "openLanes": "shift-left",
+        "closedLanes": "right-lane",
+        "closedShoulders": "both",
+        "workersPresent": "true",
+        "description": "Eastbound lanes reduced to one lane and shifted to opposing side of roadway on MC-85 (W. Buckeye Rd) from near 91st Ave to near 75th Ave. for approx. 7 months.  Westbound traffic also reduced to 1 lane.",
+        "issuingOrganization": "Maricopa County DOT",
+        "timestampEventCreation": "2019-01-20T06:35:00-07:00",
+        "timestampEventUpdate": "2019-03-29T14:42:00-07:00"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -112.25971430540085,
+            33.43575915170122
+          ],
+          [
+            -112.25756853818892,
+            33.43577034327309
+          ],
+          [
+            -112.25513309240341,
+            33.435788249785084
+          ],
+          [
+            -112.2543928027153,
+            33.435839730986515
+          ],
+          [
+            -112.25310266017914,
+            33.43595164653644
+          ],
+          [
+            -112.25267618894577,
+            33.435980744555806
+          ],
+          [
+            -112.25054115056992,
+            33.436166523987694
+          ],
+          [
+            -112.24842220544814,
+            33.43635006472261
+          ],
+          [
+            -112.24679410457611,
+            33.43647988598364
+          ],
+          [
+            -112.2459653019905,
+            33.4365447965413
+          ],
+          [
+            -112.24351108074188,
+            33.43674176621221
+          ],
+          [
+            -112.24127680063248,
+            33.436927544014786
+          ],
+          [
+            -112.2391578555107,
+            33.4371155596992
+          ],
+          [
+            -112.23768800497054,
+            33.437164801834946
+          ],
+          [
+            -112.23682969808578,
+            33.437155848721424
+          ],
+          [
+            -112.23430037498474,
+            33.437131227654525
+          ],
+          [
+            -112.23226189613342,
+            33.437113321419645
+          ],
+          [
+            -112.22985863685608,
+            33.4370775089388
+          ],
+          [
+            -112.22841024398804,
+            33.43708198549972
+          ],
+          [
+            -112.22583532333374,
+            33.43710660658059
+          ],
+          [
+            -112.22450494766235,
+            33.4371155596992
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "roadblock",
+        "wzFeatureType": "Work Zone Begin Location",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "roadName": "MC-85;Buckeye Rd",
+        "roadNum": "MC-85",
+        "roadDirection": "eastbound",
+        "crossStreet": "91st Ave."},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+           -112.259714,
+            33.435759
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+        "properties": {
+        "marker-color": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "roadblock",
+        "wzFeatureType": "Work Zone End Location",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "crossStreet": "75th Ave."},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+           -112.224504,
+            33.437115
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "stroke": "#0080ff",
+        "stroke-width": 3,
+        "stroke-opacity": 1,
+        "wzFeatureType": "Work Zone",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "subidentifier": "TT0345;TCP_12;westbound",
+        "startDateTime": "2019-01-20T06:35:00-07:00",
+        "startDateTimeVerification": "Verified",
+        "endDateTime": "2019-08-20T23:59:59-07:00",
+        "endDateTimeVerification": "Estimated",
+        "wz_status": "active",
+        "totalLanes": 2,
+        "openLanes": "shift-right",
+        "closedLanes": "reft-lane",
+        "closedShoulders": "both",
+        "workersPresent": "true",
+        "description": "Westbound lanes reduced to one lane and shifted to the right on MC-85 (W. Buckeye Rd) from near 75th Ave to near 91st Ave. for approx. 7 months.  Eastbound traffic also reduced to 1 lane.",
+        "issuingOrganization": "Maricopa County DOT",
+        "timestampEventCreation": "2019-01-20T06:35:00-07:00",
+        "timestampEventUpdate": "2019-03-29T14:42:00-07:00"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -112.224502,
+            33.437137
+          ],
+          [
+            -112.2254490852356,
+            33.43714018077056
+          ],
+          [
+            -112.22628057003021,
+            33.437131227654525
+          ],
+          [
+            -112.2284612059593,
+            33.43711108314001
+          ],
+          [
+            -112.22967356443405,
+            33.43711108314001
+          ],
+          [
+            -112.23088592290878,
+            33.43712675109612
+          ],
+          [
+            -112.23177909851074,
+            33.437131227654525
+          ],
+          [
+            -112.23248183727264,
+            33.43714689560699
+          ],
+          [
+            -112.2337532043457,
+            33.437155848721424
+          ],
+          [
+            -112.23508626222609,
+            33.43716927839134
+          ],
+          [
+            -112.235968708992,
+            33.43717151666947
+          ],
+          [
+            -112.23768532276152,
+            33.43719166116991
+          ],
+          [
+            -112.23831564188004,
+            33.43717375494752
+          ],
+          [
+            -112.23910689353943,
+            33.43714241904943
+          ],
+          [
+            -112.23919004201889,
+            33.437144657328226
+          ],
+          [
+            -112.23942071199417,
+            33.43712227453754
+          ],
+          [
+            -112.24030584096907,
+            33.437041696443195
+          ],
+          [
+            -112.24256426095963,
+            33.43684025087997
+          ],
+          [
+            -112.24302023649216,
+            33.436808914861444
+          ],
+          [
+            -112.24531888961792,
+            33.43662313680488
+          ],
+          [
+            -112.24746465682983,
+            33.43645750302146
+          ],
+          [
+            -112.2499269247055,
+            33.436249341196635
+          ],
+          [
+            -112.25197613239288,
+            33.43606580024867
+          ],
+          [
+            -112.25392073392867,
+            33.435904642023075
+          ],
+          [
+            -112.25516527891159,
+            33.43581734785923
+          ],
+          [
+            -112.25767850875854,
+            33.43579720303972
+          ],
+          [
+            -112.25971966981888,
+            33.43579048809884
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#0080ff",
+        "marker-size": "medium",
+        "marker-symbol": "roadblock",
+        "wzFeatureType": "Work Zone Begin Location",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "roadName": "MC-85;Buckeye Rd",
+        "roadNum": "MC-85",
+        "roadDirection": "westbound",
+        "crossStreet": "75th Ave."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.224502,
+            33.437137
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#0080ff",
+        "marker-size": "medium",
+        "marker-symbol": "roadblock",
+        "wzFeatureType": "Work Zone End Location",
+        "demarcationMethod": "Estimated",
+        "identifier": "maricopa.gov.2019012001",
+        "crossStreet": "91st Ave."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.259719,
+            33.435790
+        ]
+      }
+    }
+  ]
+}
