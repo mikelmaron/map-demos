@@ -28,6 +28,9 @@
     map.on('load', function() {
 
         map.on('click', function(e) {
+
+          // 1. queryRenderedFeatures to get a list of nearby roads
+
           var bbox = [
             map.project(turf.destination([e.lngLat.lng, e.lngLat.lat], .15, -45).geometry.coordinates),
             map.project(turf.destination([e.lngLat.lng, e.lngLat.lat], .15, 135).geometry.coordinates)
@@ -62,7 +65,52 @@
               'line-cap': 'round'
             }
           });
+
+        // 2. break up the roads into segments that end at intersections (by iterating every lineString, running turfjs.lineIntersect with every other lineString, splitting that lineString, and saving the resulting segments).
+
+        // Break up MultiLineStrings into individual LineStrings
+        // TODO
+
+
+        // TODO Make sure the below handles overlapping streets (like on tile edges)
+
+        var segments = [];
+        features.forEach(function(feature) {
+
+          var build_segments = [feature];
+          var other_features = features.filter(x => x != feature);
+
+          other_features.forEach(function(other_feature) {
+            var tmp_segments = [];
+            build_segments.forEach(function(build_segment) {
+              var split = turf.lineSplit(build_segment, other_feature);
+              if (split.features.length > 0) {
+                tmp_segments = tmp_segments.concat(split.features);
+              } else {
+                tmp_segments = tmp_segments.concat(build_segment);
+              }
+            });
+            build_segments = tmp_segments;
+          });
+
+          segments = segments.concat(build_segments);
         });
+
+
+        // deduplicate the segments.
+
+        // Third, build an index of all vertices of each segment.
+
+        // Fourth, find closest segment by iterating and calculating turfjs.pointToLineDistance on each.
+
+        // Fifth, with the closest segment determine which vertice is further along clockwise by calling turfjs.bearing between the vertices and the clicked point; add 360 if the bearing is negative, and take the vertice with larger bearing value as the current endpoint vertice;
+
+        // Sixth, for each segment indexed for the current endpoint vertice, calculate turfjs.bearing for the other vertice, and subtract the bearing of the previous segment (adding 360 if result is negative) and select the segment with the largest bearing difference as the next segment in the polygon (if no other segments indexed besides current, then point is not bounded and process fails; if only one segment, just select that one);
+
+        // Seven, test if endpoint of current segment equals start point of first segment; if yes, move to next step, otherwise repeat step 6;
+
+        // Eighth, turfjs.polyginize the result and add to the map
+      });
     });
 </script>
 
