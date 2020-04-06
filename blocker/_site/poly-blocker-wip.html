@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Select features around a clicked point</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
+<script src='https://unpkg.com/@turf/turf/turf.js'></script>
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [29.39893,-3.36987],
+        minZoom: 2,
+        zoom: 16
+    });
+
+    map.on('load', function() {
+
+        map.on('click', function(e) {
+          // queryRenderedFeatures to get a list of nearby roads
+          var bbox = [
+            map.project(turf.destination([e.lngLat.lng, e.lngLat.lat], .15, -45).geometry.coordinates),
+            map.project(turf.destination([e.lngLat.lng, e.lngLat.lat], .15, 135).geometry.coordinates)
+          ];
+          //var bbox = [ [e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+
+          var features = map.queryRenderedFeatures(bbox, {
+            layers: ['road-motorway-trunk','road-primary','road-secondary-tertiary','road-street', 'road-major-link', 'road-path', 'road-construction', 'bridge-primary-secondary-tertiary']
+          });
+
+        /*  features = features.map(function(feature) {
+            if (feature.geometry.type == "LineString") {
+              return feature;
+            }
+          });
+          features = features.filter(function(feature) {
+            return feature != undefined;
+          });
+*/
+          if (map.getSource('nearby-roads')) {
+            map.removeLayer('nearby-roads-lines');
+            map.removeSource('nearby-roads');
+          }
+
+          map.addSource('nearby-roads', {
+            'type': 'geojson',
+            'data': {
+              'type': 'FeatureCollection',
+              'features': features
+            }
+          });
+          map.addLayer({
+            'id': 'nearby-roads-lines',
+            'type': 'line',
+            'source': 'nearby-roads',
+            'paint': {
+              'line-color': '#FF0000',
+              'line-width': 5,
+              'line-opacity': .25
+            },
+            'layout': {
+              'line-cap': 'round'
+            }
+          });
+          return;
+          features = features.map(function(feature) {
+            if (feature.geometry.type == "LineString") {
+              return feature;
+            }
+          });
+
+          features = features.filter(function(feature) {
+            return feature != undefined;
+          });
+
+          //  break up the roads into segments that end at intersections (by iterating every lineString, running turfjs.lineIntersect with every other lineString, splitting that lineString, and saving the resulting segments).
+
+          var segments = [];
+          features.forEach(function(feature) {
+
+            var build_segments = [feature];
+            var other_features = features.filter(x => x != feature);
+
+            other_features.forEach(function(other_feature) {
+              var tmp_segments = [];
+              build_segments.forEach(function(build_segment) {
+                console.log(build_segment);
+                console.log(other_feature);
+                var split = turf.lineSplit(build_segment, other_feature);
+                console.log(split);
+                if (split.features.length > 0) {
+                  tmp_segments = tmp_segments.concat(split.features);
+                } else {
+                  tmp_segments = tmp_segments.concat(build_segment);
+                }
+              });
+              build_segments = tmp_segments;
+            });
+
+            segments = segments.concat(build_segments);
+          });
+
+          if (map.getSource('nearby-roads')) {
+            map.removeLayer('nearby-roads-lines');
+            map.removeSource('nearby-roads');
+          }
+
+          map.addSource('nearby-roads', {
+            'type': 'geojson',
+            'data': {
+              'type': 'FeatureCollection',
+              'features': segments
+            }
+          });
+          map.addLayer({
+            'id': 'nearby-roads-lines',
+            'type': 'line',
+            'source': 'nearby-roads',
+            'paint': {
+              'line-color': '#FF0000',
+              'line-width': 5,
+              'line-opacity': .25
+            },
+            'layout': {
+              'line-cap': 'round'
+            }
+          });
+
+            /*  Third, build an index of all vertices of each segment. Fourth, find closest segment by iterating and calculating turfjs.pointToLineDistance on each. Fifth, with the closest segment determine which vertice is further along clockwise by calling turfjs.bearing between the vertices and the clicked point; add 360 if the bearing is negative, and take the vertice with larger bearing value as the current endpoint vertice; Sixth, for each segment indexed for the current endpoint vertice, calculate turfjs.bearing for the other vertice, and subtract the bearing of the previous segment (adding 360 if result is negative) and select the segment with the largest bearing difference as the next segment in the polygon (if no other segments indexed besides current, then point is not bounded and process fails; if only one segment, just select that one); Seven, test if endpoint of current segment equals start point of first segment; if yes, move to next step, otherwise repeat step 6; Eighth, turfjs.polyginize the result and add to the map */
+        });
+    });
+</script>
+
+</body>
+</html>
