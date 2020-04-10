@@ -37,7 +37,8 @@
           ];
 
           var features = map.queryRenderedFeatures(bbox, {
-            layers: ['road-motorway-trunk','road-primary','road-secondary-tertiary','road-street', 'road-major-link', 'road-path', 'road-construction', 'bridge-primary-secondary-tertiary']
+            //layers: ['road-motorway-trunk','road-primary','road-secondary-tertiary','road-street', 'road-major-link', 'road-path', 'road-construction', 'bridge-primary-secondary-tertiary']
+            layers: ['building']
           });
 
           if (map.getSource('nearby-roads')) {
