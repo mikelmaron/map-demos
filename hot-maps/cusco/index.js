@@ -3,7 +3,7 @@ var mobile = document.documentElement.clientWidth <= 700;
 mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw';
 window.map = new mapboxgl.Map({
   container: "map", // container id
-  style: "mapbox://styles/mikelmaron/cka797pgu0jxj1iqhiib30lo8", //stylesheet location
+  style: "mapbox://styles/mikelmaron/cka797pgu0jxj1iqhiib30lo8/draft", //stylesheet location
   center: [-71.9414,-13.4392], // starting position
   zoom: 5.8,
   maxZoom: 14,
@@ -27,7 +27,7 @@ var playback = false;
 var dayStats = {};
 
 var styleByDay = throttle(function (day) {
-  var layers = ['malaria-building-point', 'malaria-building-glow', 'malaria-building-shape'];
+  var layers = ['malaria-building-point', 'malaria-building-glow', 'malaria-building-shape', 'peru-roads'];
   var filter = ["<=", "@day", day];
 
   if (map.loaded()) {
