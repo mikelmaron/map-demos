@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <meta charset=utf-8 />
+  <title>PR Mapping</title>
+  <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='index.css' rel='stylesheet' />
+</head>
+
+<body>
+
+<div id="sidebar" class="sidebar pin-topleft z1">
+  <div class="sidebar-inner fill-bg dark round sidebar-inner">
+    <div class="flex-scroll scroll-styled pad4">
+      <h2>PR Mapping</h2>
+      <p class="prose show-mobile">
+      </p>
+      <p class="prose hide-mobile">
+      </p>
+<!--      <a class="hide-mobile button rcon next space-bottom2" href="http://tasks.hotosm.org/?sort_by=priority&direction=asc&search=Eliminate+Malaria" style="display: inline-block;" target="_blank">Start mapping now</a> -->
+      <div id="counter" class="dark col3">
+        <h1 id="buildings">5012</h1>
+        <h3 class="space-bottom2"><span style="font-family: 'Open Sans', sans-serif;">buildings mapped by </span><span id="time">Dec 8, 2016</span></h3>
+        <div id="player" class="clearfix space-bottom">
+          <div class="contain control-container round fill-control lifted">
+            <button id="play-control" class="button playback play pin-bottomleft round-left keyline-right"></button>
+            <div class="pad1y pad2x contain round-right">
+              <input id="range" class="col12" type="range" min="0" max="61" step="1" value="0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="map"></div>
+  <script src='index.js'></script>
+</body>
+
+</html>

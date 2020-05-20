@@ -3,11 +3,11 @@ var mobile = document.documentElement.clientWidth <= 700;
 mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw';
 window.map = new mapboxgl.Map({
   container: "map", // container id
-  style: "mapbox://styles/mikelmaron/cka797pgu0jxj1iqhiib30lo8/", //stylesheet location
-  center: [-71.9414,-13.4392], // starting position
-  zoom: 5.8,
+  style: "mapbox://styles/mikelmaron/ckaemj5nu0iyk1jnlfas0p9po/", //stylesheet location
+  center: [-66.307, 18.134], // starting position
+  zoom: 8,
   maxZoom: 14,
-  minZoom: 1,
+  minZoom: 8,
   hash: true
 });
 
@@ -21,13 +21,13 @@ var range = document.getElementById('range');
 var time = document.getElementById('time');
 var buildings = document.getElementById('buildings');
 
-var startDate = new Date(2020, 2, 14);
+var startDate = new Date(2017, 8, 5);
 var playback = false;
 
 var dayStats = {};
 
 var styleByDay = throttle(function (day) {
-  var layers = ['malaria-building-point', 'malaria-building-glow', 'malaria-building-shape', 'peru-roads'];
+  var layers = ['PR-building-point', 'PR-building-glow', 'PR-building-shape', 'PR-roads'];
   var filter = ["<=", "@day", day];
 
   if (map.loaded()) {
@@ -99,7 +99,7 @@ function loadBuildingStats(callback) {
       callback(JSON.parse(xmlhttp.responseText));
     }
   }
-  xmlhttp.open("GET", "peru_buildings_by_day.json", true);
+  xmlhttp.open("GET", "puerto_rico_buildings_by_day.json", true);
   xmlhttp.send();
 }
 
