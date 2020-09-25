@@ -8,6 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://d3js.org/d3.v4.min.js'></script>
     <style>
       body {
         color:#404040;
@@ -180,8 +181,10 @@
   </head>
   <body>
     <div class='sidebar'>
-      <div class='heading'>
+      <div id='heading' class='heading'>
         <h1>Our locations</h1>
+        <div id='toggles'>
+        </div>
       </div>
       <div id='listings' class='listings'></div>
     </div>
@@ -207,60 +210,53 @@
         zoom: 4.5
       });
 
+      var unesco_layers = ['world-heritage-sites-uk','creative-cities-uk','biosphere-reserves-uk', 'uk-global-geoparks'];
+      var unesco_designations = ['World Heritage Sites','Creative City','Biosphere Reserve', 'Global Geoparks']
       /**
        * Wait until the map loads to make changes to the map.
       */
       map.on('load', function (e) {
-        var features = map.querySourceFeatures('composite',
-          {'sourceLayer': 'World_Heritage_Sites_UK'});
-//        features.forEach(function(site, i){
-//          site.properties.id = i;
-//        });
-        buildLocationList(features);
         makeMarkersClickable();
+        d3.csv('./UNESCO sites.csv', buildLocationList);
+        addToggles();
       });
-
-      function slugify(string) {
-        return string.replace(/[^A-Za-z0-9]/g, '');
-      }
 
       /**
        * Add a marker to the map for every store listing.
       **/
       function makeMarkersClickable() {
-        map.on('click', 'world-heritage-sites-uk', function (e) {
-          var clicked = map.queryRenderedFeatures(e.point, {'layers': ['world-heritage-sites-uk']});
-          flyToSite(clicked[0]);
-          createPopUp(clicked[0]);
+        map.on('click', function (e) {
+          var clicked = map.queryRenderedFeatures(e.point, {'layers': unesco_layers});
+          if (clicked.length == 0) return;
 
-          var activeItem = document.getElementsByClassName('active');
-          if (activeItem[0]) {
-            activeItem[0].classList.remove('active');
-          }
-          var listing = document.getElementById('listing-' + slugify(clicked[0].properties['Account Name']));
-          listing.classList.add('active');
+          flyToSite(clicked[0].geometry.coordinates);
+          createPopUp(clicked[0].properties, clicked[0].geometry.coordinates);
+          activateListing(clicked[0].properties);
         });
 
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'world-heritage-sites-uk', function () {
-          map.getCanvas().style.cursor = 'pointer';
+        unesco_layers.forEach(function(layer,i) {
+          // Change the cursor to a pointer when the mouse is over the places layer.
+          map.on('mouseenter', layer, function () {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          // Change it back to a pointer when it leaves.
+          map.on('mouseleave', layer, function () {
+            map.getCanvas().style.cursor = '';
+          });
         });
 
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'world-heritage-sites-uk', function () {
-          map.getCanvas().style.cursor = '';
-        });
       }
 
+      /* Add a new listing section to the sidebar. */
       function buildLocationList(data) {
         data.forEach(function(site, i){
-          var prop = site.properties;
+          if (! site.Latitude) return;
 
-          /* Add a new listing section to the sidebar. */
           var listings = document.getElementById('listings');
           var listing = listings.appendChild(document.createElement('div'));
           /* Assign a unique `id` to the listing. */
-          listing.id = "listing-" + slugify(prop['Account Name']);
+          listing.id = "listing-" + slugify(getName(site));
           /* Assign the `item` class to each listing for styling. */
           listing.className = 'item';
 
@@ -268,28 +264,22 @@
           var link = listing.appendChild(document.createElement('a'));
           link.href = '#';
           link.className = 'title';
-          link.id = "link-" + slugify(prop['Account Name']);
-          link.innerHTML = prop['Account Name'];
+          link.id = "link-" + slugify(getName(site));
+          link.innerHTML = getName(site);
 
           /* Add details to the individual listing. */
           var details = listing.appendChild(document.createElement('div'));
-          if (prop.Website) {
-            details.innerHTML += ' · ' + prop.Website;
+          if (site.Website) {
+            details.innerHTML += site.Website;
           }
 
-          /**
-           * Listen to the element and when it is clicked, do four things:
-           * 1. Update the `currentFeature` to the store associated with the clicked link
-           * 2. Fly to the point
-           * 3. Close all other popups and display popup for clicked store
-           * 4. Highlight listing in sidebar (and remove highlight for all other listings)
-          **/
           link.addEventListener('click', function(e){
             for (var i=0; i < data.length; i++) {
-              if (this.id === "link-" + slugify(data[i].properties['Account Name'])) {
+              if (! data[i].Latitude) continue;
+              if (this.id === "link-" + slugify(getName(data[i]))) {
                 var clickedListing = data[i];
-                flyToSite(clickedListing);
-                createPopUp(clickedListing);
+                flyToSite([clickedListing['Longtitude '], clickedListing.Latitude]);
+                createPopUp(clickedListing, [clickedListing['Longtitude '], clickedListing.Latitude]);
               }
             }
             var activeItem = document.getElementsByClassName('active');
@@ -301,21 +291,74 @@
         });
       }
 
-      function flyToSite(currentFeature) {
+      function addToggles() {
+        var toggles = document.getElementById('toggles');
+        var toggle = toggles.appendChild(document.createElement('span'));
+        var link = toggle.appendChild(document.createElement('a'));
+        link.href = '#';
+        link.id = '';
+        link.innerHTML = 'All ';
+        link.addEventListener('click', function(e) {
+          toggleLayer(this.id);
+        });
+
+        for (var i=0; i < unesco_layers.length; i++) {
+          var toggle = toggles.appendChild(document.createElement('span'));
+          var link = toggle.appendChild(document.createElement('a'));
+          link.href = '#';
+          link.id = unesco_layers[i];
+          link.innerHTML = unesco_designations[i] + ' ';
+          link.addEventListener('click', function(e) {
+            toggleLayer(this.id);
+          });
+        }
+      }
+
+      function toggleLayer (layer, designation) {
+        unesco_layers.forEach(function(unesco_layer, i) {
+          if (layer == '' || layer == unesco_layer) {
+            map.setLayoutProperty(unesco_layer, 'visibility', 'visible');
+          } else {
+            map.setLayoutProperty(unesco_layer, 'visibility', 'none');
+          }
+        });
+      }
+
+      function flyToSite(coordinate) {
         map.flyTo({
-          center: currentFeature.geometry.coordinates,
+          center: coordinate,
           zoom: 15
         });
       }
 
-      function createPopUp(currentFeature) {
+      function createPopUp(properties, coordinate) {
         var popUps = document.getElementsByClassName('mapboxgl-popup');
         if (popUps[0]) popUps[0].remove();
         var popup = new mapboxgl.Popup({closeOnClick: false})
-          .setLngLat(currentFeature.geometry.coordinates)
-          .setHTML('<h3>' + currentFeature.properties['Account Name'] + '</h3>' +
-            '<h4>' + currentFeature.properties['Website'] + '</h4>')
+          .setLngLat(coordinate)
+          .setHTML('<h3>' + getName(properties)  + '</h3>' +
+            '<h4>' + properties['Website'] + '</h4>')
           .addTo(map);
+      }
+
+      function activateListing(properties) {
+        var activeItem = document.getElementsByClassName('active');
+        if (activeItem[0]) {
+          activeItem[0].classList.remove('active');
+        }
+        var listing = document.getElementById('listing-' + slugify(getName(properties)));
+        listing.classList.add('active');
+        document.getElementById('listings').scrollTop = listing.offsetTop - document.getElementById('heading').offsetHeight;
+      }
+
+      /* Utils */
+
+      function getName(properties) {
+        return properties['Account Name'] || properties['Name'];
+      }
+
+      function slugify(string) {
+        return string.replace(/[^A-Za-z0-9]/g, '');
       }
     </script>
   </body>
