@@ -205,13 +205,18 @@
       */
       var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mrabagliati/ckesnacqe269f19uigmog120e',
+        style: 'mapbox://styles/mrabagliati/ckesnacqe269f19uigmog120e/',
         center: [-3.4,54.39],
         zoom: 4.5
       });
 
-      var unesco_layers = ['world-heritage-sites-uk','creative-cities-uk','biosphere-reserves-uk', 'uk-global-geoparks'];
-      var unesco_designations = ['World Heritage Sites','Creative City','Biosphere Reserve', 'Global Geoparks']
+      var unesco_layers = {
+        'world-heritage-sites-uk': {'designation': 'World Heritage Sites', 'polygon_layers': ['world-heritage-sites-uk-geojs-8sr5zo','wales-world-heritage-d2cf86']},
+        'creative-cities-uk' : {'designation': 'Creative City', 'polygon_layers': ['unesco-creative-cities-uk-azclfz']},
+        'biosphere-reserves-uk': {'designation': 'Biosphere Reserve', 'polygon_layers': ['biosphere-reserves-uk-bpwvec']},
+        'uk-global-geoparks': {'designation':'Global Geoparks', 'polygon_layers': ['nwhg-boundary','unesco-global-geoparks-4tkvxa'] }
+      };
+
       /**
        * Wait until the map loads to make changes to the map.
       */
@@ -226,7 +231,7 @@
       **/
       function makeMarkersClickable() {
         map.on('click', function (e) {
-          var clicked = map.queryRenderedFeatures(e.point, {'layers': unesco_layers});
+          var clicked = map.queryRenderedFeatures(e.point, {'layers': Object.keys(unesco_layers)});
           if (clicked.length == 0) return;
 
           flyToSite(clicked[0].geometry.coordinates);
@@ -234,7 +239,7 @@
           activateListing(clicked[0].properties);
         });
 
-        unesco_layers.forEach(function(layer,i) {
+        Object.keys(unesco_layers).forEach(function(layer,i) {
           // Change the cursor to a pointer when the mouse is over the places layer.
           map.on('mouseenter', layer, function () {
             map.getCanvas().style.cursor = 'pointer';
@@ -302,24 +307,30 @@
           toggleLayer(this.id);
         });
 
-        for (var i=0; i < unesco_layers.length; i++) {
+        Object.keys(unesco_layers).forEach(function(layer,i) {
           var toggle = toggles.appendChild(document.createElement('span'));
           var link = toggle.appendChild(document.createElement('a'));
           link.href = '#';
-          link.id = unesco_layers[i];
-          link.innerHTML = unesco_designations[i] + ' ';
+          link.id = layer;
+          link.innerHTML = unesco_layers[layer].designation;
           link.addEventListener('click', function(e) {
             toggleLayer(this.id);
           });
-        }
+        });
       }
 
       function toggleLayer (layer, designation) {
-        unesco_layers.forEach(function(unesco_layer, i) {
+        Object.keys(unesco_layers).forEach(function(unesco_layer, i) {
           if (layer == '' || layer == unesco_layer) {
             map.setLayoutProperty(unesco_layer, 'visibility', 'visible');
+            unesco_layers[ unesco_layer ].polygon_layers.forEach(function(polygon_layer) {
+              map.setLayoutProperty(polygon_layer, 'visibility', 'visible');
+            });
           } else {
             map.setLayoutProperty(unesco_layer, 'visibility', 'none');
+            unesco_layers[ unesco_layer ].polygon_layers.forEach(function(polygon_layer) {
+              map.setLayoutProperty(polygon_layer, 'visibility', 'none');
+            });
           }
         });
       }
