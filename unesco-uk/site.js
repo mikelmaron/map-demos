@@ -78,30 +78,11 @@ function buildLocationList(data) {
     link.href = '#';
     link.className = 'title';
     link.id = "link-" + slugify(getName(site));
-    link.innerHTML = getName(site);
-
-    /* Add details to the individual listing. */
-    var details = listing.appendChild(document.createElement('div'));
-    details.classList.add('row');
-    details.classList.add('details');
-    var columns = [details.appendChild(document.createElement('div')), details.appendChild(document.createElement('div'))];
-    columns[0].classList.add('column');
-    columns[0].classList.add('label');
-    columns[1].classList.add('column');
-
-    var label = columns[0].appendChild(document.createElement('div'));
-    label.innerHTML = "Designation type";
-    var value = columns[1].appendChild(document.createElement('div'));
-    value.innerHTML = site['Designation type'];
-
-    label = columns[0].appendChild(document.createElement('div'));
-    label.innerHTML = "Website";
-    value = columns[1].appendChild(document.createElement('div'));
-    value.innerHTML = site['Website'];
+    link.innerHTML = getName(site) +  " " + designation_icon(site['Designation type']);
 
     var description = listing.appendChild(document.createElement('div'));
     description.classList.add('description');
-    description.innerHTML = site.Description;
+    description.innerHTML = site.Description + "<p/>" + "<a target='_blank' href='" + site['Website'] + "'>Website 🌐</a>";
 
     link.addEventListener('click', function(e){
       for (var i=0; i < data.length; i++) {
@@ -146,6 +127,10 @@ function addToggle(div, id, label) {
     document.getElementsByClassName('on')[0].classList.remove('on');
     this.parentElement.classList.add('on');
     toggleLayer(this.id);
+    map.flyTo({
+      center:  [-3.4,54.39],
+      zoom: 4.5
+    });
   });
   return toggle;
 }
@@ -182,16 +167,17 @@ function toggleLayer (layer) {
 function flyToSite(coordinate) {
   map.flyTo({
     center: coordinate,
-    zoom: 12
+    zoom: 9
   });
 }
 
 function createPopUp(properties, coordinate) {
+  return;
   var popUps = document.getElementsByClassName('mapboxgl-popup');
   if (popUps[0]) popUps[0].remove();
-  var popup = new mapboxgl.Popup({closeOnClick: false})
+  var popup = new mapboxgl.Popup({closeOnClick: true})
     .setLngLat(coordinate)
-    .setHTML('<h3>' + getName(properties)  + '</h3>')
+    .setHTML('<h3>' + getName(properties)  + '</h3>' + '<h4>test</h4>')
     .addTo(map);
 }
 
@@ -222,4 +208,16 @@ function getName(properties) {
 
 function slugify(string) {
   return string.replace(/[^A-Za-z0-9]/g, '');
+}
+
+function designation_icon(designation) {
+  if (designation == "World Heritage Sites") {
+    return "🏛️";
+  } else if (designation == "Creative City") {
+    return "🏙";
+  } else if (designation == "Biosphere Reserve") {
+    return "🍎";
+  } else if (designation == "Global Geoparks") {
+    return "🌋";
+  }
 }
