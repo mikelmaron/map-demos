@@ -144,6 +144,7 @@ a:hover {
 
 /* Marker tweaks */
 .mapboxgl-popup {
+  padding-bottom: 10px;
 }
 
 .mapboxgl-popup-close-button {
