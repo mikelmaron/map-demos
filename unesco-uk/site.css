@@ -91,7 +91,7 @@ a:hover {
 .listings .item .title {
   display:block;
   color:#101010;
-  font-weight:700;
+  font-size: 24px;
 }
 
 .listings .item .title small { font-weight:400; }

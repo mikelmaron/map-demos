@@ -18,6 +18,7 @@ var map = new mapboxgl.Map({
   zoom: 4.5
 });
 map.addControl(new mapboxgl.NavigationControl());
+map.scrollZoom.disable();
 
 var unesco_layers = {
   'world-heritage-sites-uk': {'designation': 'World Heritage Sites', 'polygon_layers': ['world-heritage-sites-uk-geojs-8sr5zo','wales-world-heritage-d2cf86']},
