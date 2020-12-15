@@ -385,7 +385,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             id: 'issues-population',
             alignment: 'left',
             title: 'Issues: population data sets',
-            image: '',
+            image: 'images/pop-table.png',
             description: 'There are many world population datasets, which is best? We tried WorldPop Constrained, WorldPop Unconstrained, and Facebook Population, giving a wide variety of results: from 9.8 to 16.5 million for high connectivity region. Next: look at SEDAC GPW data which includes age demographics, and add population as a visual map layer.',
             location: {
               center: [65.12,48.39],
