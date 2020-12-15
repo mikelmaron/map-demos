@@ -423,7 +423,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Issues: data quality',
             image: '',
-            description: 'Are these schools? Or is our imagery old? /* this one is confusing, what are we trying to say?*/',
+            description: 'Looking at the satellite imagery here, there don\'t appear to be any schools. Are these points actually schools? Or is our imagery old? /* this one is confusing, what are we trying to say?*/',
             location: {
                 center: [71.732,43.5103],
                 zoom: 14,
