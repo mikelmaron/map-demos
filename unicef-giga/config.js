@@ -53,7 +53,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             id: 'kazakhstan',
             alignment: 'left',
             title: 'Kazakhstan',
-            description: 'This analytic exploration looks at what portion of the population of Kazakhstan has access to schools at each connectivity level.',
+            description: 'This exploratory analysis looks at what portion of the population of Kazakhstan has access to schools at each connectivity level.',
             location: {
                 center: [65.12,48.39],
                 zoom: 4.5,
@@ -89,7 +89,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Schools',
             image: '',
-            description: 'There are 7410 schools in Kazakhstan.',
+            description: 'There are 7410 total schools in Kazakhstan.',
             location: {
                 center: [65.12,48.39],
                 zoom: 4.5,
@@ -111,9 +111,9 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
         {
             id: 'schools-connectivity',
             alignment: 'left',
-            title: 'Schools Connectivity',
+            title: 'School Connectivity',
             image: '',
-            description: '4195 Schools have high connection (in yellow, rated 7-10), 2797 have medium connection (in orange, rated 4-6), 351 low connection (in purple, rated 0-3) (and 67 with no speed data).',
+            description: 'Of the 7,410 total schools, 4,195 have high connectivity (yellow, rated 7-10), 2,797 have medium connectivity (orange, rated 4-6), and 351 have low connectivity (purple, rated 0-3).<br/><sub><i>67 schools with no speed data</i></sub>',
             location: {
                 center: [65.12,48.39],
                 zoom: 4.5,
@@ -146,7 +146,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Schools Accessibility',
             image: '',
-            description: 'For each school, calculated the area that can reach the school in 30 minutes drive, and merged the low, medium, and high connectivity catchment areas.',
+            description: 'For each school, we calculated the area that can reach the school with a 30 minute drive, and created low, medium, and high connectivity catchment areas (shown in purple, orange, and yellow).',
             location: {
                 center: [69.007,43.112],
                 zoom: 8,
@@ -180,7 +180,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
         {
             id: 'city-mixed',
             alignment: 'left',
-            title: 'City with mixed connectivity',
+            title: 'Area with mixed connectivity',
             image: '',
             description: '',
             location: {
@@ -210,6 +210,39 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             onChapterExit: []
         },
         {
+          id: 'city-mixed-with-iso',
+          alignment: 'left',
+          title: 'Area with mixed connectivity',
+          image: '',
+          hidden: true,
+          description: '',
+          location: {
+              center: [51.394,51.2218],
+              zoom: 11.65,
+              pitch: 25,
+              bearing: 50
+          },
+          onChapterEnter: [
+            {
+              layer: 'schools-glow',
+              opacity: .75
+            },
+            {
+              layer: 'kz30-high',
+              opacity: .20
+            },
+            {
+              layer: 'kz30-med',
+              opacity: .20
+            },
+            {
+              layer: 'kz30-low',
+              opacity: .20
+            }
+          ],
+          onChapterExit: []
+      },
+        {
             id: 'isolated',
             alignment: 'left',
             title: 'An isolated village',
@@ -217,7 +250,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             description: '',
             location: {
                 center: [66.6611,49.21422],
-                zoom: 15.62,
+                zoom: 14,
                 pitch: 26,
                 bearing: -66.3
             },
@@ -245,8 +278,8 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             description: '',
             location: {
                 center: [68.209,44.1433],
-                zoom: 12,
-                pitch: 70,
+                zoom: 11.5,
+                pitch: 65,
                 bearing: -77.2
             },
             onChapterEnter: [
@@ -266,7 +299,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Population by Connectivity',
             image: '',
-            description: 'Then compared catchment areas to various population data sets, to determine what part of the total population was served. Using Facebook Population Density Data, for high, we found 14.78 million; for medium, 13.72 milion (932K medium only) low 7.8 million (40.5K low only).',
+            description: 'To determine how many people were served by each level of connectivity, we compared catchment areas to various population data sets. We found: <b>14.78 million people with high connectivity, 932k with only medium, and 40.5k with only low connectivity school access</b> leaving ~3m people without connectivity as defined by a 30 minute drive. <br/><sup>Using <a href="https://dataforgood.fb.com/docs/high-resolution-population-density-maps-demographic-estimates-documentation/">Facebook Population Density Data</a></sup>',
             location: {
                 center: [67.999,52.453],
                 zoom: 6.13,
@@ -274,7 +307,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
                 bearing: 31
             },
             onChapterEnter: [
-              {
+              { /* not sure this adds much at this zoom level*/
                 layer: 'pop-extrusion',
                 opacity: .75,
                 duration: 1000
@@ -299,20 +332,30 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
                 opacity: .8,
                 duration: 1000
               },
+              {
+                /* these labels make it hard to read */
+                layer: 'place-label (3) copy',
+                opacity: .6,
+              }
             ],
             onChapterExit: [
               {
                 layer: 'pop-extrusion',
                 opacity: 0
               },
+              {
+                /* these labels make it hard to read, and shouldn't be under the isochrones */
+                layer: 'place-label (3) copy',
+                opacity: 0.9,
+              }
             ]
         },
         {
             id: 'methodology',
             alignment: 'left',
-            title: 'Methodology',
+            title: 'Reusable Methodology',
             image: './images/qgis-model.png',
-            description: 'Create isochrones from school points using Mapbox Isochrone API (https://github.com/mapbox/unicef-school-accessibility/blob/main/isochrones.py). Create layers for each connectivity band by unioning isochrones with connectivity_speed. Calculate pop reached by each band by joining population raster to isochrone bands and calculating zonal statistics. This is reusable!',
+            description: '<ol><li>Create isochrones from school points using <a href="https://github.com/mapbox/unicef-school-accessibility/blob/main/isochrones.py">Mapbox Isochrone API</a>.</li><li>Create layers for each connectivity band by unioning isochrones by connectivity_speed, and subtracting bands from each other.</li><li>Calculate pop reached by each band by joining population raster to sliced isochrones with zonal statistics.</li></ol> This is reusable!',
             location: {
                 center: [75.0802,43.0227],
                 zoom: 11.37,
@@ -343,7 +386,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Issues: population data sets',
             image: '',
-            description: 'Tried World Pop Constrained, World Pop Unconstrained, and Facebook Population, giving wide variety of results (from 9.8 to 16.5 million for high connectivity region). Want to also look at SEDAC for age demographics. And add population as a proper visual layer.',
+            description: 'There are many world population datasets, which is best? We tried WorldPop Constrained, WorldPop Unconstrained, and Facebook Population, giving a wide variety of results: from 9.8 to 16.5 million for high connectivity region. Next: look at SEDAC GPW data which includes age demographics, and add population as a visual map layer.',
             location: {
               center: [65.12,48.39],
               zoom: 4.5,
@@ -380,10 +423,10 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Issues: data quality',
             image: '',
-            description: 'Are these schools? Or is our imagery old?',
+            description: 'Are these schools? Or is our imagery old? /* this one is confusing, what are we trying to say?*/',
             location: {
                 center: [71.732,43.5103],
-                zoom: 14.66,
+                zoom: 14,
                 pitch: 11,
                 bearing: 0
             },
@@ -401,7 +444,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Limitation: road network',
             image: '',
-            description: 'Isochrones depend on road network completeness. In OSM, major roads and cities are complete. Many villages are more minimal. Could address this by either editing the road network (the imagery refresh helps!) or unioning in a buffer around school location.',
+            description: 'Isochrones depend on road network completeness. In OSM, major roads and cities are complete. Many villages are more minimal. Could address this by editing the road network (the imagery refresh helps!) and adding a buffer around school location.',
             location: {
                 center: [69.424121,44.809783],
                 zoom: 15.41,
@@ -429,12 +472,12 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
               }
             ]
         },
-        {
+        { /* this is confusing and a bit of a non sequitur. The generalized shapes are also invalid */
                     id: 'limitations-generalizations',
                     alignment: 'left',
                     title: 'Issues: isochrone geometry',
                     image: '',
-                    description: 'Generalized shapes returned by Isochone API can have invalid geometry, so using large non-generalized shape',
+                    description: 'Generalized shapes returned by Isochone API can have invalid geometry, so we used large non-generalized shapes making analysis slow and unwieldy',
                     location: {
                         center: [79.8827,45.4022],
                         zoom: 10.35,
@@ -462,7 +505,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Next Steps',
             image: '',
-            description: 'What\'s next? Feedback on the analysis and visualization. Refinement of methods. Sharing and Training. Development of Story. Other locations.',
+            description: 'What\'s next? Feedback on the analysis and visualization. Refinement of methods. Sharing and Training. Development of Story. Expansion to other locations.',
             location: {
                 center: [70.8426,42.2146],
                 zoom: 12.66,
