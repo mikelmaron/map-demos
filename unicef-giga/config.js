@@ -311,7 +311,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             id: 'methodology',
             alignment: 'left',
             title: 'Methodology',
-            image: 'images/qgis-model.png',
+            image: './images/qgis-model.png',
             description: 'Create isochrones from school points using Mapbox Isochrone API (https://github.com/mapbox/unicef-school-accessibility/blob/main/isochrones.py). Create layers for each connectivity band by unioning isochrones with connectivity_speed. Calculate pop reached by each band by joining population raster to isochrone bands and calculating zonal statistics. This is reusable!',
             location: {
                 center: [75.0802,43.0227],
@@ -489,6 +489,10 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
           },
             callback: 'enableFreetime',
             onChapterEnter: [
+              {
+                layer: 'kz30-high',
+                opacity: .50
+              }
             ],
             onChapterExit: []
         }
