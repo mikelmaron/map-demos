@@ -9,46 +9,6 @@ var config = {
     footer: 'Source: ',
     use3dTerrain: true,
     chapters: [
-      /*
-1) show all Kazakhstan
-2) show schools and count
-3) show connectivity levels and counts
-4) show accessibility (zoom in)
-5) show another location and give summary of population comparisons
-
-7) methodology: isochrones api, merge, clip
-8) display qgis process -- reusable
-9) limitations: isochrone generalization
-10) limitations: road network incomplete. options: buffer or improve road network
-6) show another location that shows off 3d and satellite (point out new features)
-11) limitation / question: population data sets
-
-Alex feedback:
-
-Ok one issue — i see the whole map style load initially then it disappears
-
-
-Could be worth exploring a few areas in detail — one with high connectivity, one with low
-12:05
-feels like there is a lot of time spent on build up, and limitations
-12:06
-So after schools -accessibility, show a few areas of interest
-12:06
-“here is one place, here is another”
-12:06
-then talk about summary stats, methods, limitation
-
-nd then maybe add in one more positive before the explore part
-12:08
-so it doesn’t end on limitations
-12:08
-like zoom back out and have some conclusion: In this analysis we found xyz
-12:09
-Maybe Limitaions, Next Steps, Conclusions
-12:10
-What would we do next: Add in buffering, optimize the slicing of the layers, try other population layers with age cohorts
-
-      */
         {
             id: 'kazakhstan',
             alignment: 'left',
@@ -423,7 +383,7 @@ What would we do next: Add in buffering, optimize the slicing of the layers, try
             alignment: 'left',
             title: 'Issues: data quality',
             image: '',
-            description: 'Looking at the satellite imagery here, there don\'t appear to be any schools. Are these points actually schools? Or is our imagery old? /* this one is confusing, what are we trying to say?*/',
+            description: 'Looking at the satellite imagery here, there don\'t appear to be any schools. Are these points actually schools? Or is our imagery old?',
             location: {
                 center: [71.732,43.5103],
                 zoom: 14,
