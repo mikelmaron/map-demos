@@ -493,11 +493,16 @@ var config = {
             callback: 'enableFreetime',
             onChapterEnter: [
               {
-                layer: 'kz30-high',
-                opacity: .50
+                layer: 'kazakhstan-merged',
+                opacity: 1
               }
             ],
-            onChapterExit: []
+            onChapterExit: [
+              {
+                layer: 'kazakhstan-merged',
+                opacity: 0 
+              }
+            ]
         }
     ]
 };
