@@ -6,9 +6,9 @@ var config = {
     theme: 'light',
     use3dTerrain: false,
     title: 'The pandemic, housing, and services',
-    subtitle: 'Insights from fused data',
-    byline: 'By a Digital Storyteller',
-    footer: 'Source: source citations, etc.',
+    subtitle: 'Insights from fused {WHAT} data',
+    byline: 'by TOP team of AWS, Precisely, ApartmentList, Abt, Mapbox',
+    footer: 'Source: ApartmentList, Precisely, ...',
     chapters: [
         {
             id: 'start',
@@ -35,9 +35,9 @@ var config = {
             id: 'vacancies',
             alignment: 'left',
             hidden: false,
-            title: 'Vacancies',
+            title: 'Apartment vacancy rates from ApartmentList',
             image: '',
-            description: 'Vacancy rates from ApartmentList',
+            description: '{DATES OF VACANCIES?} [WHY DID WE WANT TO SHOW VACANCIES? SHOWS APARTMENTS AVAILABLE AND A POSSIBLE OUTFLOW FROM BAY AREA TO MAYBE AREAS THAT MIGHT BE MORE URBAN AND/OR LESS EXPENSIVE TO LIVE IN SINCE WE DIND’T HAVE TO COMMUTE TO WORK}',
             location: {
                 center: [-122.42672, 37.75912],
                 zoom: 11.5,
@@ -73,7 +73,7 @@ var config = {
             hidden: false,
             title: 'Proximity to pharmacies',
             image: '',
-            description: 'Fused by Precisely',
+            description: 'Fused by Precisely. This view shows the proximity of those vacancies to “services” (we chose to present pharmacies) in the same area. The larger blue bubbles show X while the smaller/purple bubbles show Y',
             location: {
                 center: [-122.42672, 37.75912],
                 zoom: 11.5,
@@ -99,7 +99,28 @@ var config = {
             hidden: false,
             title: 'Close up of a neighborhood',
             image: '',
-            description: 'Interesting stuff hapenning here',
+            description: '{WHAT ARE THESE DATA PRESENTING? A CLOSER LOOK AT THE SERVICES AND PROXIMITY? WHAT ARE THE BIG DOTS AND WHAT ARE THE SMALL DOTS?}',
+            location: {
+                center: [-122.41186, 37.78315],
+                zoom: 13.9,
+                pitch: 31,
+                bearing: 0
+            },
+            mapAnimation: 'flyTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: 'schools',
+            alignment: 'left',
+            hidden: false,
+            title: 'COVID pandemic has had on the quality of public schools and housing prices',
+            image: '',
+            description: 'Precisely’s ‘Great Schools’ offering provides aggregated school performance data from counties and state departments of education; that data is then used to tag every property within every school attendance zone with this ‘Great Schools’ rating.',
             location: {
                 center: [-122.41186, 37.78315],
                 zoom: 13.9,
