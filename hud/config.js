@@ -8,7 +8,7 @@ var config = {
     title: 'The pandemic, housing, and services',
     subtitle: 'Insights Fused from HUD Data Fabric',
     byline: 'by TOP team of AWS, Precisely, ApartmentList, Abt, Mapbox',
-    footer: 'Source: ApartmentList, Precisely, ...',
+    footer: 'Sources: ApartmentList, Precisely, Mapbox',
     chapters: [
         {
             id: 'start',
@@ -71,9 +71,9 @@ var config = {
             id: 'mobility',
             alignment: 'left',
             hidden: false,
-            title: 'Mapbox Movement shows significant decrease in movement in urban cores and arterial roads, corresponding to some of the higher vacancy rates. (grey indicates decreased activity, black increased activity)',
+            title: 'Mobility and the pandemic',
             image: '',
-            description: '',
+            description: 'Mapbox Movement shows significant decrease in movement in urban cores and arterial roads, corresponding to some of the higher vacancy rates. (grey indicates decreased activity, black increased activity)',
             location: {
                 center: [-122.42672, 37.75912],
                 zoom: 11.5,
