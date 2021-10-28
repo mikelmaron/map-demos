@@ -6,7 +6,7 @@ var config = {
     theme: 'light',
     use3dTerrain: false,
     title: 'The pandemic, housing, and services',
-    subtitle: 'Insights from fused {WHAT} data',
+    subtitle: 'Insights Fused from HUD Data Fabric',
     byline: 'by TOP team of AWS, Precisely, ApartmentList, Abt, Mapbox',
     footer: 'Source: ApartmentList, Precisely, ...',
     chapters: [
@@ -37,7 +37,7 @@ var config = {
             hidden: false,
             title: 'Apartment vacancy rates from ApartmentList',
             image: '',
-            description: '{DATES OF VACANCIES?} [WHY DID WE WANT TO SHOW VACANCIES? SHOWS APARTMENTS AVAILABLE AND A POSSIBLE OUTFLOW FROM BAY AREA TO MAYBE AREAS THAT MIGHT BE MORE URBAN AND/OR LESS EXPENSIVE TO LIVE IN SINCE WE DIND’T HAVE TO COMMUTE TO WORK}',
+            description: 'The apartment locations are scaled according to the number of vacancies at that location.',
             location: {
                 center: [-122.42672, 37.75912],
                 zoom: 11.5,
@@ -68,12 +68,48 @@ var config = {
             ]
         },
         {
+            id: 'mobility',
+            alignment: 'left',
+            hidden: false,
+            title: 'Mapbox Movement shows significant decrease in movement in urban cores and arterial roads, corresponding to some of the higher vacancy rates. (grey indicates decreased activity, black increased activity)',
+            image: '',
+            description: '',
+            location: {
+                center: [-122.42672, 37.75912],
+                zoom: 11.5,
+                pitch: 0,
+                bearing: 0
+            },
+            mapAnimation: 'flyTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+              {
+                   layer: 'california-3bvyyw',
+                    opacity: 1,
+                    duration: 5000
+              },
+              {
+                   layer: 'data-driven-circles',
+                    opacity: 0,
+                    duration: 1000
+              }
+            ],
+            onChapterExit: [
+              {
+                   layer: 'california-3bvyyw',
+                    opacity: 0,
+                    duration: 1000
+              }
+            ]
+        },
+        {
             id: 'pharmacies',
             alignment: 'left',
             hidden: false,
             title: 'Proximity to pharmacies',
             image: '',
-            description: 'Fused by Precisely. This view shows the proximity of those vacancies to “services” (we chose to present pharmacies) in the same area. The larger blue bubbles show X while the smaller/purple bubbles show Y',
+            description: 'Fused by Precisely. This view shows the proximity of those vacancies to “services” (we chose to present pharmacies) in the same area. The darker the point, the more nearby pharmacies.',
             location: {
                 center: [-122.42672, 37.75912],
                 zoom: 11.5,
@@ -99,7 +135,7 @@ var config = {
             hidden: false,
             title: 'Close up of a neighborhood',
             image: '',
-            description: '{WHAT ARE THESE DATA PRESENTING? A CLOSER LOOK AT THE SERVICES AND PROXIMITY? WHAT ARE THE BIG DOTS AND WHAT ARE THE SMALL DOTS?}',
+            description: 'Next steps will be to visualize the effect that the COVID pandemic has had on the quality of public schools within neighborhood areas and what impact that had on the cost of housing.',
             location: {
                 center: [-122.41186, 37.78315],
                 zoom: 13.9,
@@ -113,7 +149,8 @@ var config = {
             ],
             onChapterExit: [
             ]
-        },
+        }
+        /*,
         {
             id: 'schools',
             alignment: 'left',
@@ -134,6 +171,6 @@ var config = {
             ],
             onChapterExit: [
             ]
-        }
+        }*/
     ]
 };
