@@ -22,12 +22,12 @@ const config = {
   /**
    * This sets the title in the sidebar and the <title> tag of the app
    */
-  title: 'FEWSNET 2021',
+  title: 'FEWSNET IPC Phases 2021',
   /**
    * This sets the description in the sidebar
    */
   description:
-    'Acute Food Insecurity 2021',
+    '',
   /**
    * Data field to chart from the source data
    */
@@ -36,30 +36,13 @@ const config = {
    * Label for the graph line
    */
   dataSeriesLabel: 'IPC Phase',
-  /**
-   * Basic implementation of zooming to a clicked feature
-   */
-  zoomToFeature: true,
-  /**
-   * Color to highlight features on map on click
-   * TODO: add parameter for fill color too?
-   */
-  highlightColor: '#fff',
+  labelLayer: '202110',
+  labelField: 'unit_name',
   /**
    * (_Optional_) Set this to 'bar' for a bar chart, default is line
    */
-  chartType: 'line',
-  /**
-   * The name of the vector source, leave as composite if using a studio style,
-   * change if loading a tileset programmatically
-   */
-  sourceId: 'composite',
+  chartType: 'line'
 
-  /**
-   * Legend colors and values, ignored if autoLegend is used. Delete both if no legend is needed.
-   */
-  legendColors: ['#c200c2', '#a200a3', '#810184', '#600165', '#400246'],
-  legendValues: [13.779, 33.44, 40.88, 46.99, 53.86],
 };
 
 /** ******************************************************************************
@@ -132,15 +115,20 @@ function onMapClick(e) {
   .then(response => response.json())
   .then(json => {
     let data = [0,0,0];
+    let name = '';
     json.features.forEach((feature, idx) => {
       let layer = feature.properties.tilequery.layer;
       config.sourceLayers.forEach((sourceLayer, idx) => {
         if (layer == sourceLayer) {
-          data[idx] = feature.properties.CS;
+          data[idx] = feature.properties[config.field];
+        }
+        if (layer == config.labelLayer) {
+          name = feature.properties[config.labelField];
         }
       });
     });
     updateChartFromClick(data);
+    document.getElementById('sidebar-description').innerHTML = name;
   });
   marker.setLngLat(coordinates).addTo(map);
 }
@@ -154,48 +142,6 @@ function updateChartFromClick(data) {
   chart.load({
     columns: [['data'].concat(data)]
   });
-}
-
-/**
- * Builds out a legend from the viz layer
- */
-function buildLegend() {
-  const legend = document.getElementById('legend');
-  const legendColors = document.getElementById('legend-colors');
-  const legendValues = document.getElementById('legend-values');
-
-  if (config.autoLegend) {
-    legend.classList.add('block-ml');
-    const style = map.getStyle();
-    const layer = style.layers.find((i) => i.id === config.studioLayerName);
-    const fill = layer.paint['fill-color'];
-    // Remove the interpolate expression to get the stops
-    const stops = fill.slice(3);
-    stops.forEach((stop, index) => {
-      // Every other value is a value, and then a color. Only iterate over the values
-      if (index % 2 === 0) {
-        // Default to 1 decimal unless specified in config
-        const valueEl = `<div class='col align-center'>${stop.toFixed(
-          typeof config.autoLegendDecimals !== 'undefined'
-            ? config.autoLegendDecimals
-            : 1,
-        )}</div>`;
-        const colorEl = `<div class='col h12' style='background-color:${
-          stops[index + 1]
-        }'></div>`;
-        legendColors.innerHTML += colorEl;
-        legendValues.innerHTML += valueEl;
-      }
-    });
-  } else if (config.legendValues) {
-    legend.classList.add('block-ml');
-    config.legendValues.forEach((stop, idx) => {
-      const key = `<div class='col h12' style='background-color:${config.legendColors[idx]}'></div>`;
-      const value = `<div class='col align-center'>${stop}</div>`;
-      legendColors.innerHTML += key;
-      legendValues.innerHTML += value;
-    });
-  }
 }
 
 function addToggleButtons() {
