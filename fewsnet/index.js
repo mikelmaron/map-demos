@@ -1,24 +1,27 @@
-/* global turf c3  */
-
 'use strict';
-/**
- * Customize this impact tool by filling in the following values to match your data
- */
+
 const config = {
-  /**
-   * Replace this with your Mapbox Access Token (**Do this first!**)
-   */
+
   accessToken:
     'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw',
-  /**
-   * Replace with the url of your map style
-   */
+
   mapStyle: 'mapbox://styles/mikelmaron/cl8w1swct001614odwboi3an1',
-  tileSource: 'mikelmaron.1d7ai9xs',
-  /**
-   * The layers within the vector tileset to use for querying
-   */
-  sourceLayers: ['202102', '202106', '202110'],
+
+  sourceLayers: {
+    'mikelmaron.3vfoxwtv': ['200907','200910'],
+    'mikelmaron.49oiddh4': ['201001','201004','201007','201010'],
+    'mikelmaron.79bhg27n': ['201101','201104','201107','201110'],
+    'mikelmaron.69z9bmkx': ['201201','201204','201207','201210'],
+    'mikelmaron.4fduo916': ['201301','201304','201307','201310'],
+    'mikelmaron.bwyf33un': ['201401','201404','201407','201410'],
+    'mikelmaron.8ckbs4x3': ['201501','201504','201507','201510'],
+    'mikelmaron.4h3axuyp': ['201602','201606','201610'],
+    'mikelmaron.1vjd12vq': ['201702','201706','201710'],
+    'mikelmaron.6xeqjeox': ['201802','201806','201810','201812'],
+    'mikelmaron.1sjenia3': ['201902','201906','201910'],
+    'mikelmaron.3sn6k2bp': ['202002','202006','202010'],
+    'mikelmaron.1d7ai9xs': ['202102','202106','202110']
+  },
   /**
    * This sets the title in the sidebar and the <title> tag of the app
    */
@@ -41,13 +44,18 @@ const config = {
   /**
    * (_Optional_) Set this to 'bar' for a bar chart, default is line
    */
-  chartType: 'line'
-
+  chartType: 'line',
+  /**
+   * The name of the vector source, leave as composite if using a studio style,
+   * change if loading a tileset programmatically
+   */
+  sourceId: 'composite',
 };
 
-/** ******************************************************************************
- * Don't edit below here unless you want to customize things further
- */
+config.allLayers = Object.keys(config.sourceLayers).map((key) => {
+  return config.sourceLayers[key];
+}).flat(1);
+
 /**
  * Disable this function if you edit index.html directly
  */
@@ -63,16 +71,15 @@ const config = {
 const chart = c3.generate({
   bindto: '#chart',
   data: {
-    // TODO make the initial chart have as many points as the number of fields
-    columns: [['data', 0, 0,0]],
+    columns: [['data'].concat(new Array(config.allLayers.length).fill(0))],
     names: { data: config.dataSeriesLabel },
-    // To make a bar chart uncomment this line
     type: config.chartType ? config.chartType : 'line',
   },
   axis: {
     x: {
       type: 'category',
-      categories: config.sourceLayers,
+      categories: config.allLayers,
+      tick: { count: 5, rotate: 45, culling: false }
     },
     y: { max: 5, min: 0, tick: {count: 6, values: [0,1,2,3,4,5] }}
   },
@@ -103,78 +110,125 @@ const map = new mapboxgl.Map({
 
 const marker = new mapboxgl.Marker();
 
+function addLayers() {
+  Object.keys(config.sourceLayers).forEach((source) => {
+    map.addSource(source, {
+      type: 'vector',
+      url: 'mapbox://' + source
+    });
+    config.sourceLayers[source].forEach((layer) => {
+      map.addLayer({
+        'id': layer,
+        'type': 'fill',
+        'source': source,
+        'source-layer': layer,
+        'layout': {'visibility': 'none'},
+        'paint': {
+          'fill-color': [
+            "match",
+            ["get", "CS"],
+            [1],
+            "#d8f3da",
+            [2],
+            "#fee500",
+            [3],
+            "#f77000",
+            [4],
+            "#cd0000",
+            [5],
+            "#6d0000",
+            "hsl(0, 2%, 74%)"
+          ]
+        }
+      }, "admin-1-boundary-bg");
+    });
+  });
+}
+
+function addLivelihoodLayer() {
+  map.addLayer({
+    'id': "livelihood-zone",
+    'type': 'line',
+    'source': Object.keys(config.sourceLayers)[ Object.keys(config.sourceLayers).length -1 ],
+    'source-layer': config.allLayers[ config.allLayers.length -1 ],
+    'paint': {
+      'line-color': "hsla(0, 0%, 0%, 0.15)"
+    }
+  }, "settlement-subdivision-label");
+}
+
+map.on('load', () => {
+  addLayers();
+  addLivelihoodLayer();
+});
+
 map.once('idle', () => {
   map.on('click', onMapClick);
-  addToggleButtons();
+  addSlider();
 });
 
 function onMapClick(e) {
-  let coordinates = e.lngLat;
-  let tilequery_url = "https://api.mapbox.com/v4/" + config.tileSource + "/tilequery/" + coordinates.lng + "," + coordinates.lat + ".json?access_token=" + config.accessToken;
-  fetch(tilequery_url)
-  .then(response => response.json())
-  .then(json => {
-    let data = [0,0,0];
-    let name = '';
-    json.features.forEach((feature, idx) => {
-      let layer = feature.properties.tilequery.layer;
-      config.sourceLayers.forEach((sourceLayer, idx) => {
-        if (layer == sourceLayer) {
-          data[idx] = feature.properties[config.field];
-        }
-        if (layer == config.labelLayer) {
-          name = feature.properties[config.labelField];
-        }
-      });
-    });
+  const coordinates = e.lngLat;
+  let data = new Array(config.allLayers.length).fill(0);
+  let promises = [];
+  let allData;
+  let name = '';
+
+  Object.keys(config.sourceLayers).forEach((source, idx) => {
+    const tilequery_url = "https://api.mapbox.com/v4/" + source + "/tilequery/" + coordinates.lng + "," + coordinates.lat + ".json?access_token=" + config.accessToken;
+    promises.push(
+      fetch(tilequery_url)
+      .then(response => response.json())
+      .then(json => {
+        json.features.forEach((feature, idx) => {
+          const layer = feature.properties.tilequery.layer;
+          config.allLayers.forEach((sourceLayer, idx) => {
+            if (layer == sourceLayer) {
+              data[idx] = feature.properties.CS;
+            }
+            if (layer == config.labelLayer) {
+              name = feature.properties[config.labelField];
+            }
+          });
+        });
+      })
+    );
+    allData = Promise.all(promises);
+  });
+  allData.then(() => {
     updateChartFromClick(data);
     document.getElementById('sidebar-description').innerHTML = name;
   });
   marker.setLngLat(coordinates).addTo(map);
 }
 
-/**
- * This function takes in the clicked feature and builds a data object for the chart using fields
- * specified in the config object.
- * @param {Object} feature
- */
 function updateChartFromClick(data) {
   chart.load({
     columns: [['data'].concat(data)]
   });
 }
 
-function addToggleButtons() {
-  for (const id of config.sourceLayers) {
-    // Skip layers that already have a button set up.
-    if (document.getElementById(id)) {
-      continue;
-    }
-   
-    // Create a link.
-    const link = document.createElement('a');
-    link.id = id;
-    link.href = '#';
-    link.textContent = id;
-   
-    // Show or hide layer when the toggle is clicked.
-    link.onclick = function (e) {
-      const clickedLayer = this.textContent;
-      e.preventDefault();
-      e.stopPropagation();
-      config.sourceLayers.forEach((sourceLayer, idx) => {
-        if (sourceLayer == clickedLayer) {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-          this.className = 'active';
+function addSlider() {
+  let layerSlider = document.getElementById("layerSlider");
+  layerSlider.max = config.allLayers.length - 1;
+
+  layerSlider.oninput = function() {
+    let sliderPosition = this.value;
+    document.getElementById("sliderLabel").textContent = config.allLayers[sliderPosition];
+    let layerIndex = 0;
+
+    Object.keys(config.sourceLayers).forEach((source) => {
+      config.sourceLayers[source].forEach((layer) => {
+        if (layerIndex == sliderPosition) {
+          map.setLayoutProperty(layer, 'visibility', 'visible');
         } else {
-          map.setLayoutProperty(sourceLayer, 'visibility', 'none');
-          document.getElementById(sourceLayer).className = '';
+          map.setLayoutProperty(layer, 'visibility', 'none');
         }
+        layerIndex++;
       });
-    };
-   
-    const layers = document.getElementById('menu');
-    layers.appendChild(link);
-  }
-  document.getElementById(config.sourceLayers[ config.sourceLayers.length - 1]).click();
+    });
+
+  };
+  layerSlider.value = layerSlider.max;
+  layerSlider.oninput();
 }

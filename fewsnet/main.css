@@ -42,3 +42,37 @@
   #menu a.active:hover {
   background: #3074a4;
   }
+
+  .slidecontainer {
+    width: 600px;
+    margin: 0 auto;
+  }
+  
+  .slider {
+    -webkit-appearance: none;
+    width: 600px;
+    height: 25px;
+    background: #ffffff;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    bottom: 30px;
+    position: absolute;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+  }

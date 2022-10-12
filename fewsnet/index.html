@@ -36,7 +36,7 @@
 
   <body>
     <div class="viewport-full relative scroll-hidden">
-      <nav id="menu"></nav>
+      <nav id="menu"><span id="sliderLabel"/></nav>
       <div
         id="map"
         class="bg-darken10 viewport-half viewport-full-ml absolute top left right bottom"
@@ -58,6 +58,10 @@
           </div>
         </div>
       </div>
+      <div class="slidecontainer">
+        <input type="range" min="0" max="0" value="0" class="slider" id="layerSlider">
+      </div>
+      
     </div>
   </body>
 
