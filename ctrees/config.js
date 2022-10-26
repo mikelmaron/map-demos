@@ -2,10 +2,6 @@ var config = {
     style: 'mapbox://styles/mapbox/satellite-v8',
     projection: 'globe',
     accessToken: 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw',
-    markerColor: '#3FB1CE',
-    //projection: 'equirectangular',
-    //Read more about available projections here
-    //https://docs.mapbox.com/mapbox-gl-js/example/projections/
     inset: false,
     theme: 'dark',
     use3dTerrain: false, //set true for enabling 3D maps.
@@ -13,8 +9,8 @@ var config = {
         {
             id: 'chapter-1',
             alignment: 'left',
-            hidden: true,
-            title: '',
+            hidden: false,
+            title: '1',
             description: '',
             location: {
                 center: [78.3,-5.142],
@@ -33,8 +29,8 @@ var config = {
         {
             id: 'chapter-2',
             alignment: 'left',
-            hidden: true,
-            title: '',
+            hidden: false,
+            title: '2',
             description: '',
             location: {
                 center: [35.88,-19.3],
@@ -54,8 +50,8 @@ var config = {
         {
             id: 'chapter-3',
             alignment: 'left',
-            hidden: true,
-            title: '',
+            hidden: false,
+            title: '3',
             description: '',
             location: {
                 center: [16.73,3.22],
@@ -73,17 +69,17 @@ var config = {
             ]
         },
         {
-            id: 'chapter-34',
+            id: 'chapter-4',
             alignment: 'left',
-            hidden: true,
-            title: '',
+            hidden: false,
+            title: '4',
             description: '',
             location: {
                 center: [-46.82,-3.65],
                 zoom: 5.5,
                 pitch: 49,
                 bearing: -116.8,
-                speed: 0.05
+                speed: 0.1
             },
             mapAnimation: 'flyTo',
             rotateAnimation: false,
