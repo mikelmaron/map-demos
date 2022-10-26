@@ -71,6 +71,27 @@ var config = {
             ],
             onChapterExit: [
             ]
+        },
+        {
+            id: 'chapter-34',
+            alignment: 'left',
+            hidden: true,
+            title: '',
+            description: '',
+            location: {
+                center: [-46.82,-3.65],
+                zoom: 5.5,
+                pitch: 49,
+                bearing: -116.8,
+                speed: 0.05
+            },
+            mapAnimation: 'flyTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
         }
     ]
 };
