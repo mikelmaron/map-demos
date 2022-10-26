@@ -358,6 +358,18 @@ map.on("load", function() {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.add('active');
         map[chapter.mapAnimation || 'flyTo'](chapter.location);
+        var current_chapter;
+        config.chapters.length
+        if (config.chapters.length.toString() == chapter.id) {
+            current_chapter = 0;
+        } else {
+            current_chapter = parseInt(chapter.id);
+        }
+        if (config.auto) {
+            map.on('moveend', () => {
+                document.getElementById((current_chapter + 1).toString()).scrollIntoView();
+            });
+        }
         // Incase you do not want to have a dynamic inset map,
         // rather want to keep it a static view but still change the
         // bbox as main map move: comment out the below if section.

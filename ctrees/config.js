@@ -5,83 +5,148 @@ var config = {
     inset: false,
     theme: 'dark',
     use3dTerrain: false, //set true for enabling 3D maps.
+    auto: true,
     chapters: [
         {
-            id: 'chapter-1',
+            id: '1',
             alignment: 'left',
-            hidden: false,
-            title: '1',
-            description: '',
-            location: {
-                center: [78.3,-5.142],
-                zoom: 0.64,
-                pitch: 59,
-                bearing: -31.2
-            },
-            mapAnimation: 'flyTo',
-            rotateAnimation: false,
-            callback: '',
-            onChapterEnter: [
-            ],
-            onChapterExit: [
-            ]
-        },
-        {
-            id: 'chapter-2',
-            alignment: 'left',
-            hidden: false,
-            title: '2',
-            description: '',
-            location: {
-                center: [35.88,-19.3],
-                zoom: 5,
-                pitch: 52,
-                bearing: -36.8,
-                speed: 0.2
-            },
-            mapAnimation: 'flyTo',
-            rotateAnimation: false,
-            callback: '',
-            onChapterEnter: [
-            ],
-            onChapterExit: [
-            ]
-        },
-        {
-            id: 'chapter-3',
-            alignment: 'left',
-            hidden: false,
-            title: '3',
-            description: '',
-            location: {
-                center: [16.73,3.22],
-                zoom: 6,
-                pitch: 52,
-                bearing: -36.8,
-                speed: 0.05
-            },
-            mapAnimation: 'flyTo',
-            rotateAnimation: false,
-            callback: '',
-            onChapterEnter: [
-            ],
-            onChapterExit: [
-            ]
-        },
-        {
-            id: 'chapter-4',
-            alignment: 'left',
-            hidden: false,
-            title: '4',
+            hidden: true,
+            title: 'amazon',
             description: '',
             location: {
                 center: [-46.82,-3.65],
-                zoom: 5.5,
+                zoom: 1,
                 pitch: 49,
-                bearing: -116.8,
-                speed: 0.1
+                bearing: -90,
+                duration: 2000
             },
-            mapAnimation: 'flyTo',
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '2',
+            alignment: 'left',
+            hidden: true,
+            title: 'amazon-zoom',
+            description: '',
+            location: {
+                center: [-46.82,-3.65],
+                zoom: 5,
+                pitch: 40,
+                bearing: -90,
+                duration: 2000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '3',
+            alignment: 'left',
+            hidden: true,
+            title: 'galapagos',
+            description: '',
+            location: {
+                center: [-89.774,0.505],
+                zoom: 5,
+                pitch: 40,
+                bearing: -90,
+                duration: 8000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '4',
+            alignment: 'left',
+            hidden: true,
+            title: 'dateline',
+            description: '',
+            location: {
+                center: [-181,0.505],
+                zoom: 1,
+                pitch: 0,
+                bearing: 0,
+                duration: 2000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '5',
+            alignment: 'left',
+            hidden: true,
+            title: 'papau',
+            description: '',
+            location: {
+                center: [152.2,-3.55],
+                zoom: 5,
+                pitch: 40,
+                bearing: -39.4,
+                duration: 2000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '6',
+            alignment: 'left',
+            hidden: true,
+            title: 'burma',
+            description: '',
+            location: {
+                center: [92.26,22.19],
+                zoom: 5,
+                pitch: 40,
+                bearing: -39.4,
+                duration: 8000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '7',
+            alignment: 'left',
+            hidden: true,
+            title: 'cairo',
+            description: '',
+            location: {
+                center: [30.513,29.944],
+                zoom: 6,
+                pitch: 50,
+                bearing: -160,
+                duration: 3000
+            },
+            mapAnimation: 'easeTo',
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
