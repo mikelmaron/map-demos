@@ -316,8 +316,22 @@ map.on("load", function() {
     map.addLayer({
         'id': 'ctrees',
         'type': 'raster',
-        'source': 'ctrees'
+        'source': 'ctrees',
+        'minzoom': 0,
+        'maxzoom': 8
     });
+
+    map.addSource('ctrees-africa', {
+        'type': 'raster',
+        'tiles': ['https://ctrees-tiles.s3.us-east-2.amazonaws.com/2021_global_carbon_SSA/{z}/{x}/{y}.png']
+    });
+    map.addLayer({
+        'id': 'ctrees-africa',
+        'type': 'raster',
+        'source': 'ctrees-africa',
+        'minzoom': 8,
+        'maxzoom': 11
+    })
 
     map.setFog({});
 

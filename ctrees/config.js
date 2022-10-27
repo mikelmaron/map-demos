@@ -78,9 +78,9 @@ var config = {
             description: '',
             location: {
                 center: [-181,0.505],
-                zoom: 1,
-                pitch: 0,
-                bearing: 0,
+                zoom: 5,
+                pitch: 40,
+                bearing: -90,
                 duration: 2000
             },
             mapAnimation: 'easeTo',
@@ -145,6 +145,111 @@ var config = {
                 pitch: 50,
                 bearing: -160,
                 duration: 3000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '8',
+            alignment: 'left',
+            hidden: true,
+            title: 'west africa',
+            description: '',
+            location: {
+                center: [8,14.51],
+                zoom: 4,
+                pitch: 40,
+                bearing: 100,
+                duration: 2000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '9',
+            alignment: 'left',
+            hidden: true,
+            title: 'gabon',
+            description: '',
+            location: {
+                center: [9.5584,0.7811],
+                zoom: 8,
+                pitch: 40,
+                bearing: 100,
+                duration: 2000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '10',
+            alignment: 'left',
+            hidden: true,
+            title: 'ngorogoro',
+            description: '',
+            location: {
+                center: [35.7,-2.8753],
+                zoom: 8,
+                pitch: 30,
+                bearing: 100,
+                duration: 22000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '11',
+            alignment: 'left',
+            hidden: true,
+            title: 'south-africa',
+            description: '',
+            location: {
+                center: [30.701,-28.254],
+                zoom: 7,
+                pitch: 60,
+                bearing: -180,
+                duration: 10000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '12',
+            alignment: 'left',
+            hidden: true,
+            title: 'africa',
+            description: '',
+            location: {
+                center: [21.8,-8.19],
+                zoom: 3,
+                pitch: 20,
+                bearing: 0,
+                duration: 2000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
