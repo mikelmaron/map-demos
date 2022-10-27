@@ -183,7 +183,7 @@ var config = {
             description: '',
             location: {
                 center: [9.5584,0.7811],
-                zoom: 8,
+                zoom: 8.1,
                 pitch: 40,
                 bearing: 100,
                 duration: 2000
@@ -204,7 +204,7 @@ var config = {
             description: '',
             location: {
                 center: [35.7,-2.8753],
-                zoom: 8,
+                zoom: 8.1,
                 pitch: 30,
                 bearing: 100,
                 duration: 22000

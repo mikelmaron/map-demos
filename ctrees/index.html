@@ -307,6 +307,19 @@ var scroller = scrollama();
 
 
 map.on("load", function() {
+
+    map.addSource('ctrees-africa', {
+        'type': 'raster',
+        'tiles': ['https://ctrees-tiles.s3.us-east-2.amazonaws.com/2021_global_carbon_SSA_20221027/{z}/{x}/{y}.png']
+    });
+    map.addLayer({
+        'id': 'ctrees-africa',
+        'type': 'raster',
+        'source': 'ctrees-africa',
+        'minzoom': 7.9,
+        'maxzoom': 11
+    })
+
     map.addSource('ctrees', {
         'type': 'raster',
         'tiles': [
@@ -318,20 +331,8 @@ map.on("load", function() {
         'type': 'raster',
         'source': 'ctrees',
         'minzoom': 0,
-        'maxzoom': 8
+        'maxzoom': 8.05
     });
-
-    map.addSource('ctrees-africa', {
-        'type': 'raster',
-        'tiles': ['https://ctrees-tiles.s3.us-east-2.amazonaws.com/2021_global_carbon_SSA/{z}/{x}/{y}.png']
-    });
-    map.addLayer({
-        'id': 'ctrees-africa',
-        'type': 'raster',
-        'source': 'ctrees-africa',
-        'minzoom': 8,
-        'maxzoom': 11
-    })
 
     map.setFog({});
 
