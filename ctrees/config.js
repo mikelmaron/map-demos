@@ -81,7 +81,7 @@ var config = {
                 zoom: 4,
                 pitch: 40,
                 bearing: -90,
-                duration: 2000
+                duration: 5000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -102,7 +102,7 @@ var config = {
                 zoom: 6.5,
                 pitch: 40,
                 bearing: -39.4,
-                duration: 2000
+                duration: 5000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
