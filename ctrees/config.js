@@ -1,7 +1,7 @@
 var config = {
-    style: 'mapbox://styles/mapbox/satellite-v8',
+    style: 'mapbox://styles/earthrise/cl9rssq8x001914quorbmzyqk',
     projection: 'globe',
-    accessToken: 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjaWZlY25lZGQ2cTJjc2trbmdiZDdjYjllIn0.Wx1n0X7aeCQyDTnK6_mrGw',
+    accessToken: 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNqeDExNmtrZzAwM2E0OW16eHZ1dzg1eWEifQ.8LTFXyY-n7OsZOoWN9ONPQ',
     inset: false,
     theme: 'dark',
     use3dTerrain: false, //set true for enabling 3D maps.
@@ -16,8 +16,8 @@ var config = {
             location: {
                 center: [-46.82,-3.65],
                 zoom: 1,
-                pitch: 49,
-                bearing: -90,
+                pitch: 20,
+                bearing: 0,
                 duration: 2000
             },
             mapAnimation: 'easeTo',
@@ -35,10 +35,10 @@ var config = {
             title: 'amazon-zoom',
             description: '',
             location: {
-                center: [-46.82,-3.65],
-                zoom: 5,
+                center: [-49.756,.5151],
+                zoom: 7.5,
                 pitch: 40,
-                bearing: -90,
+                bearing: 0,
                 duration: 2000
             },
             mapAnimation: 'easeTo',
@@ -53,14 +53,14 @@ var config = {
             id: '3',
             alignment: 'left',
             hidden: true,
-            title: 'galapagos',
+            title: 'pacific',
             description: '',
             location: {
-                center: [-89.774,0.505],
-                zoom: 5,
+                center: [-79.572,-0.016],
+                zoom: 7.5,
                 pitch: 40,
-                bearing: -90,
-                duration: 8000
+                bearing: 0,
+                duration: 50000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -78,7 +78,7 @@ var config = {
             description: '',
             location: {
                 center: [-181,0.505],
-                zoom: 5,
+                zoom: 4,
                 pitch: 40,
                 bearing: -90,
                 duration: 2000
@@ -98,8 +98,8 @@ var config = {
             title: 'papau',
             description: '',
             location: {
-                center: [152.2,-3.55],
-                zoom: 5,
+                center: [147.869,-9.093],
+                zoom: 6.5,
                 pitch: 40,
                 bearing: -39.4,
                 duration: 2000
@@ -120,10 +120,10 @@ var config = {
             description: '',
             location: {
                 center: [92.26,22.19],
-                zoom: 5,
+                zoom: 6.5,
                 pitch: 40,
                 bearing: -39.4,
-                duration: 8000
+                duration: 50000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -158,14 +158,14 @@ var config = {
             id: '8',
             alignment: 'left',
             hidden: true,
-            title: 'west africa',
+            title: 'sahel',
             description: '',
             location: {
-                center: [8,14.51],
-                zoom: 4,
-                pitch: 40,
-                bearing: 100,
-                duration: 2000
+                center: [12.947,10.642],
+                zoom: 6,
+                pitch: 49,
+                bearing: -141,
+                duration: 8000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -182,11 +182,11 @@ var config = {
             title: 'gabon',
             description: '',
             location: {
-                center: [9.5584,0.7811],
-                zoom: 8.1,
-                pitch: 40,
-                bearing: 100,
-                duration: 2000
+                center: [9.5584,0],
+                zoom: 9,
+                pitch: 0,
+                bearing: 0,
+                duration: 5000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -200,14 +200,14 @@ var config = {
             id: '10',
             alignment: 'left',
             hidden: true,
-            title: 'ngorogoro',
+            title: 'east-drc',
             description: '',
             location: {
-                center: [35.7,-2.8753],
-                zoom: 8.1,
-                pitch: 30,
-                bearing: 100,
-                duration: 22000
+                center: [28.996,-2.455],
+                zoom: 9,
+                pitch: 0,
+                bearing: 0,
+                duration: 50000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -221,14 +221,14 @@ var config = {
             id: '11',
             alignment: 'left',
             hidden: true,
-            title: 'south-africa',
+            title: 'east-drc-turn',
             description: '',
             location: {
-                center: [30.701,-28.254],
-                zoom: 7,
+                center: [28.996,-2.455],
+                zoom: 9,
                 pitch: 60,
                 bearing: -180,
-                duration: 10000
+                duration: 2000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -242,6 +242,27 @@ var config = {
             id: '12',
             alignment: 'left',
             hidden: true,
+            title: 'south-africa',
+            description: '',
+            location: {
+                center: [31.365,-24.599],
+                zoom: 9,
+                pitch: 60,
+                bearing: -180,
+                duration: 40000
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '13',
+            alignment: 'left',
+            hidden: true,
             title: 'africa',
             description: '',
             location: {
@@ -249,7 +270,7 @@ var config = {
                 zoom: 3,
                 pitch: 20,
                 bearing: 0,
-                duration: 2000
+                duration: 4000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,

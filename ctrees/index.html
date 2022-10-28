@@ -316,9 +316,16 @@ map.on("load", function() {
         'id': 'ctrees-africa',
         'type': 'raster',
         'source': 'ctrees-africa',
-        'minzoom': 7.9,
-        'maxzoom': 11
-    })
+        'minzoom': 7.5,
+        'maxzoom': 11,
+        'paint': {
+            'raster-opacity': ["interpolate", ["linear"], ["zoom"],
+                0, 0,
+                7.5, 0,
+                8, 1
+            ]
+        }
+    }, "admin-0-boundary-bg");
 
     map.addSource('ctrees', {
         'type': 'raster',
@@ -331,8 +338,15 @@ map.on("load", function() {
         'type': 'raster',
         'source': 'ctrees',
         'minzoom': 0,
-        'maxzoom': 8.05
-    });
+        'maxzoom': 8,
+        'paint': {
+            'raster-opacity': ["interpolate", ["linear"], ["zoom"],
+                0, 1,
+                7.5, 1,
+                8, 0
+            ]
+        }
+    }, "ctrees-africa");
 
     map.setFog({});
 
