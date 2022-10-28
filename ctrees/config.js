@@ -144,7 +144,7 @@ var config = {
                 zoom: 6,
                 pitch: 50,
                 bearing: -160,
-                duration: 3000
+                duration: 6000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -163,7 +163,7 @@ var config = {
             location: {
                 center: [12.947,10.642],
                 zoom: 6,
-                pitch: 49,
+                pitch: 30,
                 bearing: -141,
                 duration: 8000
             },
@@ -183,7 +183,7 @@ var config = {
             description: '',
             location: {
                 center: [9.5584,0],
-                zoom: 9,
+                zoom: 10,
                 pitch: 0,
                 bearing: 0,
                 duration: 5000
@@ -204,10 +204,10 @@ var config = {
             description: '',
             location: {
                 center: [28.996,-2.455],
-                zoom: 9,
+                zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 50000
+                duration: 60000
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -225,7 +225,7 @@ var config = {
             description: '',
             location: {
                 center: [28.996,-2.455],
-                zoom: 9,
+                zoom: 10,
                 pitch: 60,
                 bearing: -180,
                 duration: 2000
@@ -247,7 +247,7 @@ var config = {
             location: {
                 center: [31.365,-24.599],
                 zoom: 9,
-                pitch: 60,
+                pitch: 20,
                 bearing: -180,
                 duration: 40000
             },
