@@ -44,6 +44,16 @@
                 display: none;
             }
         }
+        #legend {
+            position: fixed;
+            bottom: 50px;
+            right: 30px;
+            width:250px;
+            z-index: 1;
+            background-color: #fafafa;
+            opacity: .75;
+            padding: 10px;
+        }
         #header {
             margin: auto;
             width: 100%;
@@ -136,6 +146,7 @@
 <div id="map"></div>
 <div id="mapInset"></div>
 <div id="story"></div>
+<div id="legend"><img height="70" src="img/LogoCtrees.png" /><img height="50" src="img/earthrise.png" /></div>
 
 <script src="./config.js"></script>
 <script>
@@ -317,7 +328,7 @@ map.on("load", function() {
         'type': 'raster',
         'source': 'ctrees-africa',
         'minzoom': 7.5,
-        'maxzoom': 11,
+        'maxzoom': 12,
         'paint': {
             'raster-opacity': ["interpolate", ["linear"], ["zoom"],
                 0, 0,
@@ -437,6 +448,10 @@ map.on("load", function() {
             chapter.onChapterExit.forEach(setLayerOpacity);
         }
     });
+
+    if (config.auto) {
+        document.getElementById("1").scrollIntoView();
+    }
 });
 
 //Helper functions for insetmap

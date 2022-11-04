@@ -1,3 +1,6 @@
+function easing(t) {
+    return t * (2 - t);
+}
 var config = {
     style: 'mapbox://styles/earthrise/cl9rssq8x001914quorbmzyqk',
     projection: 'globe',
@@ -15,10 +18,11 @@ var config = {
             description: '',
             location: {
                 center: [-46.82,-3.65],
-                zoom: 1,
+                zoom:2.5,
                 pitch: 20,
                 bearing: 0,
-                duration: 2000
+                duration: 2000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -39,7 +43,8 @@ var config = {
                 zoom: 7.5,
                 pitch: 40,
                 bearing: 0,
-                duration: 2000
+                duration: 2000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -60,7 +65,8 @@ var config = {
                 zoom: 7.5,
                 pitch: 40,
                 bearing: 0,
-                duration: 50000
+                duration: 50000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -81,7 +87,8 @@ var config = {
                 zoom: 4,
                 pitch: 40,
                 bearing: -90,
-                duration: 5000
+                duration: 5000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -102,7 +109,8 @@ var config = {
                 zoom: 6.5,
                 pitch: 40,
                 bearing: -39.4,
-                duration: 5000
+                duration: 5000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -123,7 +131,8 @@ var config = {
                 zoom: 6.5,
                 pitch: 40,
                 bearing: -39.4,
-                duration: 50000
+                duration: 50000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -144,7 +153,8 @@ var config = {
                 zoom: 6,
                 pitch: 50,
                 bearing: -160,
-                duration: 6000
+                duration: 6000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -165,7 +175,8 @@ var config = {
                 zoom: 6,
                 pitch: 30,
                 bearing: -141,
-                duration: 8000
+                duration: 8000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -182,11 +193,12 @@ var config = {
             title: 'gabon',
             description: '',
             location: {
-                center: [9.5584,0],
+                center: [9.288,0.347],
                 zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 5000
+                duration: 5000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -200,14 +212,15 @@ var config = {
             id: '10',
             alignment: 'left',
             hidden: true,
-            title: 'east-drc',
+            title: 'equator',
             description: '',
             location: {
-                center: [28.996,-2.455],
+                center: [10.96,0],
                 zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 60000
+                duration: 5000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -221,14 +234,15 @@ var config = {
             id: '11',
             alignment: 'left',
             hidden: true,
-            title: 'east-drc-turn',
+            title: 'congo-river',
             description: '',
             location: {
-                center: [28.996,-2.455],
-                zoom: 10,
-                pitch: 60,
-                bearing: -180,
-                duration: 2000
+                center: [17.84,0],
+                zoom: 9,
+                pitch: 0,
+                bearing: 0,
+                duration: 20000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -242,14 +256,15 @@ var config = {
             id: '12',
             alignment: 'left',
             hidden: true,
-            title: 'south-africa',
+            title: 'congo-deforestation',
             description: '',
             location: {
-                center: [31.365,-24.599],
-                zoom: 9,
-                pitch: 20,
-                bearing: -180,
-                duration: 40000
+                center: [24.2,0],
+                zoom: 10,
+                pitch: 0,
+                bearing: 0,
+                duration: 20000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
@@ -263,6 +278,116 @@ var config = {
             id: '13',
             alignment: 'left',
             hidden: true,
+            title: 'congo-lake',
+            description: '',
+            location: {
+                center: [29.42,0],
+                zoom: 10,
+                pitch: 0,
+                bearing: 0,
+                duration: 20000,
+                easing: easing
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '14',
+            alignment: 'left',
+            hidden: true,
+            title: 'east-drc-turn',
+            description: '14',
+            location: {
+                center: [29.42,0],
+                zoom: 10,
+                pitch: 35,
+                bearing: -135,
+                duration: 2000,
+                easing: easing
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '15',
+            alignment: 'left',
+            hidden: true,
+            title: 'savannah-edge',
+            description: '',
+            location: {
+                center: [26.22, -4.022],
+                zoom: 10,
+                pitch: 35,
+                bearing: -135,
+                duration: 20000,
+                easing: easing
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '16',
+            alignment: 'left',
+            hidden: true,
+            title: 'savannah-turn',
+            description: '',
+            location: {
+                center: [26.22, -4.022],
+                zoom: 9,
+                pitch: 20,
+                bearing: 160,
+                duration: 2000,
+                easing: easing
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '17',
+            alignment: 'left',
+            hidden: true,
+            title: 'south-africa',
+            description: '',
+            location: {
+                center: [31.365,-24.599],
+                zoom: 9,
+                pitch: 20,
+                bearing: 160,
+                duration: 25000,
+                easing: easing
+            },
+            mapAnimation: 'easeTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+            ],
+            onChapterExit: [
+            ]
+        },
+        {
+            id: '18',
+            alignment: 'left',
+            hidden: true,
             title: 'africa',
             description: '',
             location: {
@@ -270,7 +395,8 @@ var config = {
                 zoom: 3,
                 pitch: 20,
                 bearing: 0,
-                duration: 4000
+                duration: 4000,
+                easing: easing
             },
             mapAnimation: 'easeTo',
             rotateAnimation: false,
