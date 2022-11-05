@@ -39,7 +39,7 @@ var config = {
             title: 'amazon-zoom',
             description: '',
             location: {
-                center: [-49.756,.5151],
+                center: [-49.756,-3],
                 zoom: 7.5,
                 pitch: 40,
                 bearing: 0,
@@ -61,7 +61,7 @@ var config = {
             title: 'pacific',
             description: '',
             location: {
-                center: [-79.572,-0.016],
+                center: [-79.572,-3],
                 zoom: 7.5,
                 pitch: 40,
                 bearing: 0,
@@ -219,7 +219,7 @@ var config = {
                 zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 5000,
+                duration: 8000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
@@ -241,7 +241,7 @@ var config = {
                 zoom: 9,
                 pitch: 0,
                 bearing: 0,
-                duration: 20000,
+                duration: 30000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
@@ -263,7 +263,7 @@ var config = {
                 zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 20000,
+                duration: 30000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
@@ -285,7 +285,7 @@ var config = {
                 zoom: 10,
                 pitch: 0,
                 bearing: 0,
-                duration: 20000,
+                duration: 30000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
@@ -329,7 +329,7 @@ var config = {
                 zoom: 10,
                 pitch: 35,
                 bearing: -135,
-                duration: 20000,
+                duration: 30000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
@@ -373,7 +373,7 @@ var config = {
                 zoom: 9,
                 pitch: 20,
                 bearing: 160,
-                duration: 25000,
+                duration: 30000,
                 easing: easing
             },
             mapAnimation: 'easeTo',
