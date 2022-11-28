@@ -396,19 +396,16 @@ map.on("load", function() {
         progress: true
     })
     .onStepEnter(async response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
+        var current_chapter = config.chapters.findIndex(chap => chap.id === response.element.id);
+        var chapter = config.chapters[current_chapter];
+
         response.element.classList.add('active');
         map[chapter.mapAnimation || 'flyTo'](chapter.location);
-        var current_chapter;
-        config.chapters.length
-        if (config.chapters.length.toString() == chapter.id) {
-            current_chapter = 0;
-        } else {
-            current_chapter = parseInt(chapter.id);
-        }
+
         if (config.auto) {
-            map.on('moveend', () => {
-                document.getElementById((current_chapter + 1).toString()).scrollIntoView();
+            var next_chapter = (current_chapter + 1) % config.chapters.length;
+            map.once('moveend', () => {
+                document.querySelectorAll('[data-scrollama-index="' + next_chapter.toString() + '"]')[0].scrollIntoView();
             });
         }
         // Incase you do not want to have a dynamic inset map,
@@ -451,7 +448,7 @@ map.on("load", function() {
     });
 
     if (config.auto) {
-        document.getElementById("1").scrollIntoView();
+        document.querySelectorAll('[data-scrollama-index="0"]')[0].scrollIntoView();
     }
 });
 
