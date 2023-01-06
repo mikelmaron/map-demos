@@ -374,23 +374,22 @@ map.on("load", function() {
             window[chapter.callback]();
         }
         if (chapter.rotateAnimation) {
-            map.once('moveend', () => {
-                const rotateNumber = map.getBearing();
-                map.rotateTo(rotateNumber + (chapter.rotateDegree || 180), {
-                    duration: (chapter.delay || 30000), easing: function (t) {
-                        return t;
-                    }
-                });
-            });
+            if (chapter.location) {
+                map.once('moveend', () => rotateMap(chapter));
+            } else {
+                rotateMap(chapter);
+            }
         }
         if (config.auto) {
              var next_chapter = (current_chapter + 1) % config.chapters.length;
-             if (chapter.location || chapter.rotateAnimation) {
+            if (chapter.delay) {
+                setTimeout(() => {
+                    document.querySelectorAll('[data-scrollama-index="' + next_chapter.toString() + '"]')[0].scrollIntoView();
+                }, chapter.delay);
+             } else if (chapter.location || chapter.rotateAnimation) {
                 map.once('moveend', () => {
                     document.querySelectorAll('[data-scrollama-index="' + next_chapter.toString() + '"]')[0].scrollIntoView();
                 });
-            } else if (chapter.delay) {
-                //
             }
         }
     })
@@ -407,6 +406,15 @@ map.on("load", function() {
         document.querySelectorAll('[data-scrollama-index="0"]')[0].scrollIntoView();
     }
 });
+
+function rotateMap(chapter) {
+    const rotateNumber = map.getBearing();
+        map.rotateTo(rotateNumber + (chapter.rotateDegree || 180), {
+            duration: (chapter.rotateDuration || 30000), easing: function (t) {
+                return t;
+            }
+        });
+}
 
 //Helper functions for insetmap
 function getInsetBounds() {

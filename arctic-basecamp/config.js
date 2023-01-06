@@ -19,6 +19,8 @@ function createLayers() {
                     ["get", "lwe_thickness"],
                     -1401.2368842230903,
                     "hsl(0, 100%, 53%)",
+                    0,
+                    "hsl(100%,100%,100%)",
                     358.5379139293324,
                     "hsl(197, 99%, 63%)"
                   ],
@@ -40,35 +42,92 @@ function createLayers() {
 }
 
 var chapters = [];
-times.forEach((time, index) => {
-    var chapter = {};
-    chapter.id = time;
+var chapter = {};
+/* start */
+chapter.hidden = true;
+chapter.id = "start";
+chapter.location = {
+    center: [-28.16976, 28.07560],
+    zoom: 1.69,
+    pitch: 1.03,
+    bearing: 0.00,
+    duration: 1          
+}
+chapter.onChapterEnter = [];
+chapter.onChapterExit = [];
+chapters.push(chapter);
+
+/* load */
+chapter = {};
+chapter.hidden = true;
+chapter.id = "load";
+chapter.location = {
+    center: [-41.79448, 62.45858],
+    zoom: 3.99,
+    pitch: 35.53,
+    bearing: 0.00,
+    duration: 2000          
+}
+chapter.onChapterEnter = [
+    {
+        layer: times[0],
+        opacity: 0
+    }
+];
+chapter.onChapterExit = [];
+chapters.push(chapter);
+
+
+for (var i = 0; i < times.length; i++) {
+    chapter = {};
     chapter.hidden = true;
-    chapter.rotateAnimation = true;
-    if (index == 0) {
+    var time = times[i];
+    chapter.id = time;
+
+    if (i == 20) {
         chapter.location = {
-            center: [-43.77, 76.39],
-            zoom: 3.5,
-            bearing: 0,
-            pitch: 0           
+            center: [-40.54776, 72.85149],
+            zoom: 3.6,
+            pitch: 0.00,
+            bearing: 0.00,
+            duration: 50 * (30000 / times.length)
         }
     }
-    chapter.delay = 100;
-    chapter.rotateDegree = 1;
+    if (i > 70) {
+        chapter.rotateDuration = 30000 / times.length;
+        chapter.rotateDegree = 1;
+        chapter.rotateAnimation = true;
+    } else {
+        chapter.delay = 30000 / times.length;
+    }
     chapter.onChapterEnter = [
         {
             layer: time,
             opacity: 1
         }
     ];
-    chapter.onChapterExit = [
-        {
-            layer: time,
-            opacity: 1
-        }
-    ];
+    chapter.onChapterExit = [];
     chapters.push(chapter);
+}
+
+/* close */
+chapter = {};
+chapter.id = "close";
+chapter.hidden = true;
+chapter.location = {
+    center: [-28.16976, 28.07560],
+    zoom: 1.69,
+    pitch: 1.03,
+    bearing: 0.00,
+    duration: 2000          
+}
+chapter.onChapterEnter = [];
+chapter.onChapterExit = [];
+times.forEach(t => {
+    chapter.onChapterEnter.push({layer: t, opacity: 0});
 });
+chapters.push(chapter);
+
 
 var config = {
     style: 'mapbox://styles/earthrise/clchzj050001i14qr5orncz2v',
