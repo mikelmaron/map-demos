@@ -146,13 +146,13 @@ for (var i = 0; i < times.length; i++) {
     chapter.onChapterEnter = [
         {
             layer: time,
-            opacity: 0.5
+            opacity: 0.25
         }
     ];
     chapter.onChapterExit = [];
-    if (i > 2) {
+    if (i > 4) {
         chapter.onChapterExit.push({
-            layer: times[i-2],
+            layer: times[i-4],
             opacity: 0
         });
     }
