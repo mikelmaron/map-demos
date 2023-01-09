@@ -3,7 +3,7 @@ var times = ['2002-04-18T00:00:00', '2002-05-10T00:00:00', '2002-08-16T00:00:00'
 function createLayers() {
     map.addSource('greenland-2011', {
         type: 'vector',
-        url: 'mapbox://earthrise.0lfqocjh'
+        url: 'mapbox://earthrise.0dy5drl9'
     });
 
     map.addSource('greenland-2022', {
@@ -102,7 +102,7 @@ chapter.hidden = true;
 chapter.id = "load";
 chapter.location = {
     center: [-41.79448, 62.45858],
-    zoom: 3.99,
+    zoom: 4.3,
     pitch: 35.53,
     bearing: 0.00,
     duration: 2000          
@@ -125,7 +125,7 @@ for (var i = 0; i < times.length; i++) {
 
     if (i == 20) {
         chapter.location = {
-            center: [-40.54776, 72.85149],
+            center: [-40.54776, 70.85149],
             zoom: 3.3,
             pitch: 0.00,
             bearing: 0.00,
@@ -133,7 +133,7 @@ for (var i = 0; i < times.length; i++) {
         }
     } else if (i ==70) {
         chapter.location = {
-            center: [-40.54776, 72.85149],
+            center: [-40.54776, 70.85149],
             zoom: 3.8,
             pitch: 0.00,
             bearing: 0.00,
