@@ -156,6 +156,8 @@ for (var i = 0; i < times.length; i++) {
             opacity: 0
         });
     }
+    chapter.callback = "updateTimeline";
+
     chapters.push(chapter);
 }
 
@@ -184,6 +186,7 @@ chapter.onChapterExit = [];
 times.forEach(t => {
     chapter.onChapterEnter.push({layer: t, opacity: 0});
 });
+chapter.callback = "updateTimeline";
 chapters.push(chapter);
 
 
@@ -206,3 +209,29 @@ var config = {
     onMapLoad: 'createLayers',
     chapters: chapters
 };
+
+function updateTimeline(chapter_id) {
+    var canvas=document.getElementById("timeline");
+    var ctx=canvas.getContext("2d");
+    var cw=canvas.width;
+    var ch=canvas.height;
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(0,ch/2);
+    ctx.lineTo(cw,ch/2);
+    ctx.stroke();
+
+    var position = 0;
+    if (chapter_id) {
+        var i = times.findIndex((time) => { return time == chapter_id});
+        if (i >= 0) {
+            position = cw * i / times.length;
+        }
+    }
+    ctx.fillStyle='black';
+    ctx.beginPath();
+    ctx.arc(position,ch/2,4,0,Math.PI*2);
+    ctx.fill();
+}
