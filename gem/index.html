@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>GEM Pipelines</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 250px;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .map-overlay .map-overlay-inner {
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay h2 {
+            line-height: 24px;
+            display: block;
+            margin: 0 0 10px;
+        }
+
+        .map-overlay .legend .bar {
+            height: 10px;
+            width: 100%;
+            background: linear-gradient(to right, #fca107, #7f3121);
+        }
+
+        .map-overlay input {
+            background-color: transparent;
+            display: inline-block;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            cursor: ew-resize;
+        }
+
+        .map-overlay input[type='checkbox'] {
+            display: none;
+        }
+
+        .map-overlay input[type='checkbox']+label {
+            background-color: #3386c0;
+            display: block;
+            cursor: pointer;
+            font-weight: bold;
+            color: #ffffff;
+            position: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        }
+
+        .map-overlay input[type='checkbox']+label {
+            background-color: #3386c0;
+            text-transform: capitalize;
+        }
+
+        .map-overlay input[type='checkbox']+label:hover,
+        .map-overlay input[type='checkbox']:checked+label {
+            background-color: #4ea0da;
+        }
+
+        .map-overlay input[type='checkbox']:checked+label:before {
+            content: '✔';
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <div class="map-overlay top">
+        <div class="map-overlay-inner">
+            <input type="checkbox" id="capacity" checked="checked" />
+            <label for="capacity">Capacity</label>
+        </div>
+        <div class="map-overlay-inner">
+            <span id="description"></span>
+        </div>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNqeDExNmtrZzAwM2E0OW16eHZ1dzg1eWEifQ.8LTFXyY-n7OsZOoWN9ONPQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/light-v11',
+            zoom: 2,
+            center: [0, 0],
+            projection: 'naturalEarth'
+        });
+
+        const capacity_to_width = [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            0,
+            [
+                "+",
+                1,
+                [
+                    "/",
+                    [
+                        "to-number",
+                        ["get", "Capacity"]
+                    ],
+                    1000000
+                ]
+            ],
+            6,
+            [
+                "+",
+                1,
+                [
+                    "/",
+                    [
+                        "to-number",
+                        ["get", "Capacity"]
+                    ],
+                    100000
+                ]
+            ]
+        ];
+        map.on('load', () => {
+            // Add a new vector tile source with ID 'mapillary'.
+            map.addSource('pipeline', {
+                'type': 'vector',
+                'url': 'mapbox://earthrise.bgbtu8k0'
+            });
+            map.addLayer(
+                {
+                    'id': 'pipeline', // Layer ID
+                    'type': 'line',
+                    'source': 'pipeline', // ID of the tile source created above
+                    'source-layer': 'pipelines-9ajcka',
+                    'layout': {
+                        'line-cap': 'round',
+                        'line-join': 'round'
+                    },
+                    'paint': {
+                        'line-opacity': 0.6,
+                        'line-color': [
+                            "match",
+                            ["get", "Status"],
+                            ["Operating"],
+                            "hsl(26, 88%, 58%)",
+                            ["Construction", "Proposed"],
+                            "hsl(62, 78%, 64%)",
+                            "hsl(0, 1%, 64%)"
+                        ],
+                        'line-width': capacity_to_width
+                    }
+                },
+                'road-label-simple' // Arrange our new layer beneath labels and above roads
+            );
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
+
+        map.on('click', 'pipeline', (e) => {
+            // Copy coordinates array.
+            const properties = e.features[0].properties;
+
+            document.getElementById('description').innerHTML = "<a href='" + properties.Wiki + "'>" 
+                    + properties.PipelineName + "</a><br/>" + properties.Capacity + " bpd";
+
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'pipeline', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'pipeline', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        document.getElementById('capacity').addEventListener('change', (e) => {
+            if (e.target.checked) {
+                map.setPaintProperty('pipeline', 'line-width', capacity_to_width);
+            } else {
+                map.setPaintProperty('pipeline', 'line-width', 2);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
