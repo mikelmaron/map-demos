@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Extrude polygons for 3D indoor mapping</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNqeDExNmtrZzAwM2E0OW16eHZ1dzg1eWEifQ.8LTFXyY-n7OsZOoWN9ONPQ';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-87.61694, 41.86625],
+        zoom: 2,
+        pitch: 10,
+        bearing: 20,
+        antialias: true
+    });
+
+    var geojson = generate_geojson();
+
+    map.on('load', () => {
+        map.addSource('floorplan', {
+            'type': 'geojson',
+            /*
+             * Each feature in this GeoJSON file contains values for
+             * `properties.height`, `properties.base_height`,
+             * and `properties.color`.
+             * In `addLayer` you will use expressions to set the new
+             * layer's paint properties based on these values.
+             */
+            'data': geojson
+        });
+        map.addLayer({
+            'id': 'room-extrusion',
+            'type': 'fill-extrusion',
+            'source': 'floorplan',
+            'paint': {
+                // Get the `fill-extrusion-color` from the source `color` property.
+                'fill-extrusion-color': '#ff0000',
+
+                // Get `fill-extrusion-height` from the source `height` property.
+                'fill-extrusion-height': 100,
+                'fill-extrusion-height-transition': {
+                    "duration": 3000,
+                    "delay": 0
+                },
+                'fill-extrusion-opacity-transition': {
+                    "duration": 3000,
+                    "delay": 0
+                },
+
+                // Get `fill-extrusion-base` from the source `base_height` property.
+                'fill-extrusion-base': ['get', 'base_height'],
+
+                // Make extrusions slightly opaque to see through indoor walls.
+                'fill-extrusion-opacity': 0.5
+            }
+        });
+        var step = 0;
+        var increase = true;
+        var steps = 500;
+        var max = 15000000;
+        setInterval(function() {
+            if (step > steps) increase = false;
+            if (step == 0) increase = true;
+            if (increase) { step++; }
+            else { step--; }
+
+            var height = step * (max / steps);
+            if (height > max) height = max;
+            map.setPaintProperty(
+                `room-extrusion`,
+                'fill-extrusion-height',
+                height
+            ); 
+        },1);
+
+    });
+
+    function generate_geojson() {
+        var g = {  "type": "FeatureCollection",  "features": []};
+        for (var i=0; i<500; i++) {
+            var lat = (180 * Math.random()) - 90;
+            var lng = (360 * Math.random()) - 180;
+            var len = .1;
+            var feature = {"type": "Feature","properties": {},"geometry": { "type": "Polygon", "coordinates": [[
+                [lng,lat],
+                [lng-len,lat],
+                [lng-len,lat-len],
+                [lng,lat-len],
+                [lng,lat]]]}};
+            g.features.push(feature);
+        }
+        return g;
+    }
+</script>
+
+</body>
+</html>
