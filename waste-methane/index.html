@@ -33,6 +33,9 @@
   <div id="map"></div>
   <div id="sidebar" class="absolute top-ml bottom right z1 w-full w360-ml px12 py12-ml events-none">
     <div class="flex-parent flex-parent--column viewport-half h-auto-ml hmax-full bg-white round-ml shadow-darken10 events-all">
+        <h3 class="txt-bold">
+            <span id="sidebar-title">&nbsp;</span>
+        </h3>
         <div id="chart"></div>
     </div>
   </div>
@@ -82,7 +85,12 @@
                                 ],
                                 'rgba(255, 255, 255, 0)'
                             ]
-                        }
+                        },
+                        filter: [
+                            "any",
+                            ["==", "all", ["get", "worldview"]],
+                            ["in", "US", ["get", "worldview"]]
+                        ]
                     }
                 );
 
@@ -114,7 +122,7 @@
                         } else {
                             edgar_row.push(0);
                         }
-                        if (Object.keys(unfccc_obj).includes(i.toString())) {
+                        if (unfccc_obj && Object.keys(unfccc_obj).includes(i.toString())) {
                             unfccc_row.push(Number(unfccc_obj[i]));
                         } else {
                             unfccc_row.push(0);
@@ -122,8 +130,8 @@
                     }
                     chart.load({
                         columns: [['edgar'].concat(edgar_row), ['unfccc'].concat(unfccc_row)]
-
                     });
+                    $('#sidebar-title').text(iso);
                 });
 
                 const chart = c3.generate({
