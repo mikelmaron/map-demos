@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8' />
+  <title>Country Methane Charts</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="jquery-csv.js"></script>
+  <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet"/>
+  <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div id="sidebar" class="absolute top-ml bottom right z1 w-full w360-ml px12 py12-ml events-none">
+    <div class="flex-parent flex-parent--column viewport-half h-auto-ml hmax-full bg-white round-ml shadow-darken10 events-all">
+        <div id="chart"></div>
+    </div>
+  </div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNsa2d3cW80dDAzcngzZGtlancybGxlOTcifQ.s6iyNGSHxShYHNK-F-u-sA';
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/satellite-v8',
+      center: [0, 0],
+      zoom: 1
+    });
+
+    async function fetchData(link) {
+      const response = await fetch(link, { method: 'GET' });
+      return await response.text();
+    }
+
+    map.on('load', () => {
+      fetchData('./edgar_pc.csv').then(edgarData => {
+            fetchData('./unfccc_pc.csv').then(unfcccData => {  
+
+                map.addSource('countryData', {
+                    type: 'vector',
+                    url: 'mapbox://mapbox.country-boundaries-v1',
+                    promoteId: 'iso_3166_1_alpha_3'
+                });
+
+                map.addLayer(
+                    {
+                        id: 'country-join',
+                        type: 'fill',
+                        source: 'countryData',
+                        'source-layer': 'country_boundaries',
+                        paint: {
+                            'fill-color': [
+                                'case',
+                                ['!=', ['feature-state', 'emissions'], null],
+                                [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['feature-state', 'emissions'],
+                                    0,
+                                    'rgba(222,235,247,1)',
+                                    25,
+                                    'rgba(49,130,189,1)'
+                                ],
+                                'rgba(255, 255, 255, 0)'
+                            ]
+                        }
+                    }
+                );
+
+                let edgar = $.csv.toObjects(edgarData);
+                let unfccc = $.csv.toObjects(unfcccData);
+
+                edgar.forEach((row) => {
+                    map.setFeatureState(
+                        {
+                            source: 'countryData',
+                            sourceLayer: 'country_boundaries',
+                            id: row['country iso3']
+                        },
+                        {
+                            emissions: Number(row['2021'])
+                        }
+                    );
+                });
+
+                map.on('click','country-join', (e) => {
+                    let iso = e.features[0].properties['iso_3166_1_alpha_3'];
+                    let edgar_obj = edgar.filter((row) => { return row['country iso3'] == iso })[0];
+                    let edgar_row = [];
+                    let unfccc_obj = unfccc.filter((row) => { return row['country iso3'] == iso })[0];
+                    let unfccc_row = [];
+                    for (let i = 1970; i <= 2021; i++) {
+                        if (Object.keys(edgar_obj).includes(i.toString())) {
+                            edgar_row.push(Number(edgar_obj[i]));
+                        } else {
+                            edgar_row.push(0);
+                        }
+                        if (Object.keys(unfccc_obj).includes(i.toString())) {
+                            unfccc_row.push(Number(unfccc_obj[i]));
+                        } else {
+                            unfccc_row.push(0);
+                        }
+                    }
+                    chart.load({
+                        columns: [['edgar'].concat(edgar_row), ['unfccc'].concat(unfccc_row)]
+
+                    });
+                });
+
+                const chart = c3.generate({
+                    bindto: '#chart',
+                    data: {
+                        columns: [ ['edgar'].concat(new Array(51).fill(0)), ['unfccc'].concat(new Array(51).fill(0))],
+                        names: { data: 'kg/person/year' },
+                        type: 'line',
+                    },
+                    axis: {
+                        x: {
+                            type: 'category',
+                            categories: Array.from({length: 51}, (x, i) => i+1970),
+                            tick: { count: 10, rotate: 45, culling: false }
+                        },
+                        y: { max: 75, min: 0, tick: { count: 5 } }
+                    },
+                    size: {
+                        height: 400,
+                    },
+                });
+            });
+      });
+
+
+    });
+  </script>
+</body>
+
+</html>
