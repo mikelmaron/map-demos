@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <title>TRACE experiments</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -38,7 +38,7 @@ body { margin: 0; padding: 0; }
                 'type': 'circle',
                 'source': 'trace', 
                 'source-layer': 'all',
-                'filter': ["all", ['in', ['get','gl'], ['literal', [-1,2]] ], ["==", ["geometry-type"],"Point"]],
+                'filter': ["all", ['in', ['get','gl'], ['literal', [-1,2]] ], ["==", ["geometry-type"],"Point"], [">", ["get", "co2e_100yr"], 0]],
                 'paint': {
                     'circle-radius': ["interpolate",["cubic-bezier",1,0,0,0.01],["zoom"],0,["step",["to-number",["get","co2e_100yr"],0],1,0,1,129722,2,616181,4,20828401,10,208608313.4,12],6,["step",["to-number",["get","co2e_100yr"],0],4,0,4,129722,8,616181,12,20828401,30,208608313.4,36]],
                      'circle-color': ["match",["get","sector"],["oil-and-gas-production-and-transport","oil-and-gas-refining","coal-mining"],"#FF6F42",["copper-mining","bauxite-mining","iron-mining"],"#4380F5",["electricity-generation"],"#56979F",["domestic-aviation","international-aviation","road-transportation","road-transportation-urban-area"],"#B6B4B4",["steel","cement","aluminum","pulp-and-paper"],"#9554FF",["enteric-fermentation","manure-management","rice-cultivation","synthetic-fertilizer-application","other-agricultural-soil-emissions"],"#779608",["cropland-fires"],"rgba(0,0,0,0)",["solid-waste-disposal"],"#BBD421",["fluorinated-gases"],"#FBBA14",["buildings"],"#03A0E3",["net-forest-emissions","net-wetland-emissions","net-grassland-emissions"],"#E8516C",["forest-land-fires","shrubgrass-fires","net-shrubgrass","net-forest-land","net-wetland","wetland-fires"],"#E8516C","#ffffff"],
