@@ -55,9 +55,9 @@
     }
 
     map.on('load', () => {
+
       fetchData('./edgar_pc.csv').then(edgarData => {
             fetchData('./unfccc_pc.csv').then(unfcccData => {  
-
                 map.addSource('countryData', {
                     type: 'vector',
                     url: 'mapbox://mapbox.country-boundaries-v1',
@@ -91,7 +91,7 @@
                             ["==", "all", ["get", "worldview"]],
                             ["in", "US", ["get", "worldview"]]
                         ]
-                    }
+                    }, 'cities-layer'
                 );
 
                 let edgar = $.csv.toObjects(edgarData);
@@ -155,9 +155,51 @@
                 });
             });
       });
+      map.addSource('cities', {
+        type: 'geojson',
+        data: './city-data/cities_2022.geojson'
+      });
+        map.addLayer({
+            'id': 'cities-layer',
+            'type': 'circle',
+            'source': 'cities',
+            'paint': {
+                'circle-radius': ['get', 'Emissions per Capita (kg CH4/person/year)'],
+                'circle-stroke-width': 2,
+                'circle-color': 'purple',
+                'circle-stroke-color': 'white',
+                'circle-opacity': .5
+            }
+        });
+        map.on('click','cities-layer', (e) => {
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties['City'] + ', ' + e.features[0].properties['Country'];
 
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
 
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'cities-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'cities-layer', () => {
+            map.getCanvas().style.cursor = '';
+        });
     });
+
   </script>
 </body>
 
