@@ -44,10 +44,14 @@
 
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/satellite-v8',
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [0, 0],
-      zoom: 1
+      zoom: 1,
+      projection: 'equalEarth'
     });
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
 
     async function fetchData(link) {
       const response = await fetch(link, { method: 'GET' });
@@ -194,19 +198,47 @@
             type: 'geojson',
             data: './city-data/sites.geojson'
         });
-        map.addLayer({
-            'id': 'sites-layer',
-            'type': 'circle',
-            'source': 'sites',
-            'paint': {
-                'circle-radius': ['/', ['get', 'Emissions: Modeled (tons CH4/year)'], 2500],
-                'circle-stroke-width': 2,
-                'circle-color': 'green',
-                'circle-stroke-color': 'green',
-                'circle-opacity': .5
-            },
-            'minzoom': 5
-        });
+
+        if (urlParams.has('icon')) {
+            map.addLayer({
+                'id': 'sites-layer',
+                'type': 'symbol',
+                'source': 'sites',
+                'layout': {
+                    'icon-image': "embassy"
+                },
+                'minzoom': 5
+            });
+        } else if (urlParams.has('opacity')) {
+            map.addLayer({
+                'id': 'sites-layer',
+                'type': 'circle',
+                'source': 'sites',
+                'paint': {
+                    'circle-radius': 3,
+                    'circle-stroke-width': 0,
+                    'circle-color': 'green',
+                    'circle-stroke-color': 'green',
+                    'circle-opacity': ['min', 1, ['/', ['get', 'Emissions: Modeled (tons CH4/year)'], 5000]],
+                },
+                'minzoom': 5
+            }); 
+
+        } else {
+            map.addLayer({
+                'id': 'sites-layer',
+                'type': 'circle',
+                'source': 'sites',
+                'paint': {
+                    'circle-radius': ['/', ['get', 'Emissions: Modeled (tons CH4/year)'], 2500],
+                    'circle-stroke-width': 2,
+                    'circle-color': 'green',
+                    'circle-stroke-color': 'green',
+                    'circle-opacity': .5
+                },
+                'minzoom': 5
+            });
+        }
         map.on('click','sites-layer', (e) => {
             // Copy coordinates array.
             const coordinates = e.features[0].geometry.coordinates.slice();
