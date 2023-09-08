@@ -1,12 +1,12 @@
 var config = {
     style: 'mapbox://styles/earthrise/clm9zm6gb031901qx5yj8gjww',
     accessToken: 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNsbWExM2oxajBnaXAza21iN3hnMno0Y2UifQ.uN6YxTYSSs2XTucpB7LUoQ',
-    showMarkers: true,
+    showMarkers: false,
     markerColor: '#3FB1CE',
     //projection: 'equirectangular',
     //Read more about available projections here
     //https://docs.mapbox.com/mapbox-gl-js/example/projections/
-    inset: true,
+    inset: false,
     theme: 'dark',
     use3dTerrain: false, //set true for enabling 3D maps.
     auto: false,
@@ -16,47 +16,41 @@ var config = {
     footer: 'Source: MapSPAM, Probable Futures <br> Created using <a href="https://github.com/mapbox/storytelling" target="_blank">Mapbox Storytelling</a> template.',
     chapters: [
         {
-            id: 'slug-style-id',
+            id: 'chapter-1',
             alignment: 'left',
             hidden: false,
-            title: 'Display Title',
-            image: './path/to/image/source.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            title: 'Maize is grown across Africa',
             location: {
-                center: [-122.418398, 37.759483],
-                zoom: 8.5,
-                pitch: 60,
+                center: [0, 0],
+                zoom: 1.5,
+                pitch: 30,
                 bearing: 0
             },
-            mapAnimation: 'flyTo',
-            rotateAnimation: false,
-            callback: '',
+            rotateAnimation: true,
             onChapterEnter: [
-                // {
-                //     layer: 'layer-name',
-                //     opacity: 1,
-                //     duration: 5000
-                // }
+                 {
+                     layer: 'corn',
+                     opacity: 1,
+                     duration: 2000
+                 }
             ],
             onChapterExit: [
-                // {
-                //     layer: 'layer-name',
-                //     opacity: 0
-                // }
+                {
+                     layer: 'corn',
+                     opacity: 0
+                }
             ]
         },
         {
-            id: 'second-identifier',
+            id: 'chapter-2',
             alignment: 'right',
             hidden: false,
-            title: 'Second Title',
-            image: './path/to/image/source.png',
-            description: 'Copy these sections to add to your story.',
+            title: 'And the days are getting hotter',
             location: {
-                center: [-77.020636, 38.886900],
-                zoom: 8.5,
-                pitch: 60,
-                bearing: -43.2,
+                center: [20, 0],
+                zoom: 2,
+                pitch: 0,
+                bearing: 0,
                 // flyTo additional controls-
                 // These options control the flight curve, making it move
                 // slowly and zoom out almost completely before starting
@@ -65,47 +59,142 @@ var config = {
                 //curve: 1, // change the speed at which it zooms out
             },
             mapAnimation: 'flyTo',
-            rotateAnimation: true,
             callback: '',
-            onChapterEnter: [],
-            onChapterExit: []
+            onChapterEnter: [
+                {
+                    layer: 'region-eu-af-7',
+                    opacity: 1
+                },
+                {
+                    layer: 'region-eu-af-8',
+                    opacity: 1
+                },
+                {
+                    layer: 'region-eu-af-5',
+                    opacity: 1
+                },
+                {
+                    layer: 'region-eu-af-6',
+                    opacity: 1
+                },
+                {
+                    layer: 'region-eu-af-9',
+                    opacity: 1
+                }
+            ],
+            onChapterExit: [
+            ]
         },
         {
-            id: 'third-identifier',
+            id: 'chapter-3',
+            alignment: 'left',
+            title: 'Including in Nigeria',
+            location: {
+                center: [9.8, 9.8],
+                zoom: 5,
+                pitch: 45,
+                bearing: 0.00,
+                duration: 4000
+            },
+            mapAnimation: 'flyTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [],
+            onChapterExit: [
+                {
+                    layer: 'region-eu-af-7',
+                    opacity: 0
+                },
+                {
+                    layer: 'region-eu-af-8',
+                    opacity: 0
+                },
+                {
+                    layer: 'region-eu-af-5',
+                    opacity: 0
+                },
+                {
+                    layer: 'region-eu-af-6',
+                    opacity: 0
+                },
+                {
+                    layer: 'region-eu-af-9',
+                    opacity: 0
+                }
+            ]
+        },
+        {
+            id: 'chapter-4',
+            alignment: 'right',
+            hidden: false,
+            title: 'And Maize Yield...',
+            location: {
+                center: [9.8, 9.8],
+                zoom: 5,
+                pitch: 45,
+                bearing: 0.00,
+                duration: 4000
+            },
+            mapAnimation: 'flyTo',
+            rotateAnimation: false,
+            callback: '',
+            onChapterEnter: [
+                {
+                    layer: 'corn',
+                    opacity: 1
+                },
+            ],
+            onChapterExit: [
+                {
+                    layer: 'corn',
+                    opacity: 0
+                }
+            ]
+        },
+        {
+            id: 'chapter-5',
             alignment: 'left',
             hidden: false,
-            title: 'Third Title',
-            image: './path/to/image/source.png',
-            description: 'Copy these sections to add to your story.',
+            title: 'will decrease',
             location: {
-                center: [6.15116, 46.20595],
-                zoom: 12.52,
-                pitch: 8.01,
-                bearing: 0.00
+                center: [9.8, 9.8],
+                zoom: 5,
+                pitch: 45,
+                bearing: 0.00,
+                duration: 4000
             },
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [],
+            onChapterEnter: [
+                {
+                    layer: 'corn result',
+                    opacity: 1
+                },
+            ],
             onChapterExit: []
         },
         {
-            id: 'fourth-chapter',
+            id: 'chapter-6',
             alignment: 'fully',
             hidden: false,
-            title: 'Third Title',
-            image: './path/to/image/source.png',
-            description: 'Copy these sections to add to your story.',
+            title: 'across all of Africa',
             location: {
-                center: [-58.54195, -34.71600],
-                zoom: 4,
+                center: [20, 0],
+                zoom: 2,
                 pitch: 0,
-                bearing: 0
+                bearing: 0,
+                duration: 4000
             },
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [],
+            onChapterEnter: [
+                {
+                    layer: 'corn-result',
+                    opacity: 1
+                },
+            ],
             onChapterExit: []
         }
     ]
