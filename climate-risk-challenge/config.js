@@ -1,6 +1,6 @@
 var config = {
     style: 'mapbox://styles/earthrise/clm9zm6gb031901qx5yj8gjww',
-    accessToken: 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNsa2d3cW80dDAzcngzZGtlancybGxlOTcifQ.s6iyNGSHxShYHNK-F-u-sA',
+    accessToken: 'pk.eyJ1IjoiZWFydGhyaXNlIiwiYSI6ImNsbWExM2oxajBnaXAza21iN3hnMno0Y2UifQ.uN6YxTYSSs2XTucpB7LUoQ',
     showMarkers: true,
     markerColor: '#3FB1CE',
     //projection: 'equirectangular',
