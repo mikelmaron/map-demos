@@ -23,6 +23,38 @@ body { margin: 0; padding: 0; }
     });
 
     map.on('load', () => {
+
+        map.addSource("cog", {
+            "type": "raster",
+            "tiles": ["./raster-layers/cam-demo/temp/{z}/{x}/{y}.png"],
+            "tileSize": 256,
+            "scheme": "tms"
+        }
+        );
+        const palettes = {
+            greens: ['hsla(0, 0%, 0%, 0)', "#bae4b3", "#74c476", "#31a354", "#006d2c"]
+        };
+        let selectedColor = 'greens';
+        map.addLayer({
+            id: 'cog-layer',
+            'type': 'raster',
+            'source': 'cog',
+            'paint': {
+                "raster-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["raster-value"],
+                    -2000, palettes[selectedColor][0],
+                    32658, palettes[selectedColor][1],
+                    49972, palettes[selectedColor][2],
+                    67286, palettes[selectedColor][3],
+                    84600, palettes[selectedColor][4]
+                ],
+                "raster-color-mix": [84600, 0, 0, 0],
+                "raster-color-range": [-1968, 84600]
+            }
+        });
+
         // Add a new vector tile source with ID 'mapillary'.
         map.addSource('trace', {
             'type': 'vector',
@@ -32,14 +64,27 @@ body { margin: 0; padding: 0; }
             'minzoom': 0,
             'maxzoom': 14
         });
-        let color = ["match", ["get", "sector"], ["oil-and-gas-production-and-transport", "oil-and-gas-refining", "coal-mining"], "#FF6F42", ["copper-mining", "bauxite-mining", "iron-mining"], "#4380F5", ["electricity-generation"], "#56979F", ["domestic-aviation", "international-aviation", "road-transportation", "road-transportation-urban-area"], "#E8516C", ["steel", "cement", "aluminum", "pulp-and-paper"], "#9554FF", ["enteric-fermentation", "manure-management", "rice-cultivation", "synthetic-fertilizer-application", "other-agricultural-soil-emissions"], "#779608", ["cropland-fires"], "rgba(0,0,0,0)", ["solid-waste-disposal"], "#BBD421", ["fluorinated-gases"], "#FBBA14", ["buildings"], "#03A0E3", ["net-forest-emissions", "net-wetland-emissions", "net-grassland-emissions"], "#B6B4B4", ["forest-land-fires", "shrubgrass-fires", "net-shrubgrass", "net-forest-land", "net-wetland", "wetland-fires"], "#B6B4B4", "#ffffff"];
+        let color = ["match", ["get", "sector"],
+          ["oil-and-gas-production-and-transport", "oil-and-gas-refining", "coal-mining"], "#FF6F42", 
+          ["copper-mining", "bauxite-mining", "iron-mining"], "#4380F5", ["electricity-generation"], "#56979F", 
+          ["domestic-shipping-port","domestic-aviation", "international-aviation", "road-transportation", "road-transportation-urban-area"], "#E8516C",
+          ["steel", "cement", "aluminum", "pulp-and-paper"], "#9554FF", 
+          ["enteric-fermentation", "manure-management", "rice-cultivation", "synthetic-fertilizer-application", "other-agricultural-soil-emissions"], "#779608", 
+          ["cropland-fires"], "rgba(0,0,0,0)", 
+          ["solid-waste-disposal"], "#BBD421", 
+          ["fluorinated-gases"], "#FBBA14", 
+          ["buildings"], "#03A0E3", 
+          ["net-forest-emissions", "net-wetland-emissions", "net-grassland-emissions"], "#B6B4B4", 
+          ["forest-land-fires", "shrubgrass-fires", "net-shrubgrass", "net-forest-land", "net-wetland", "wetland-fires"], "#B6B4B4",
+           "#ffffff"];
         map.addLayer(
             {
                 'id': 'trace', // Layer ID
                 'type': 'circle',
                 'source': 'trace', 
                 'source-layer': 'all',
-                'filter': ["all", ['in', ['get','gl'], ['literal', [-1,2]] ], ["==", ["geometry-type"],"Point"], [">", ["get", "co2e_100yr"], 0]],
+                'filter':  ["all", ["has", "sector"],  ['match',['get','sector'], ['net-forest-land','net-wetland','net-shrubgrass','shrubgrass-fires','forest-land-fires','wetland-fires'], false, true], ["==", ["geometry-type"],"Point"]],
+                //'filter': ["all", ['in', ['get','gl'], ['literal', [-1,2]] ], ["==", ["geometry-type"],"Point"], [">", ["get", "co2e_100yr"], 0]],
                 'paint': {
                     'circle-radius': ["interpolate",["cubic-bezier",1,0,0,0.01],["zoom"],0,["step",["to-number",["get","co2e_100yr"],0],1,0,1,129722,2,616181,4,20828401,10,208608313.4,12],6,["step",["to-number",["get","co2e_100yr"],0],4,0,4,129722,8,616181,12,20828401,30,208608313.4,36]],
                     'circle-color': color,
@@ -58,16 +103,30 @@ body { margin: 0; padding: 0; }
             }
         );
 
+        map.addLayer({
+            'id': 'admin',
+            'type': 'fill',
+            'source': 'trace',
+            'source-layer': 'all',
+            'filter':["all", ["==", ["geometry-type"],"Polygon"], ['in', ['get','gl'], ['literal', [2]]], [">", ["get", "co2e_100yr"], 0]],
+            ['paint']: {
+                'fill-color': 'rgba(0,0,0,0)',
+                'fill-outline-color': 'black'
+            }
+        });
+
+
         // Create a popup, but don't add it to the map yet.
         const popup = new mapboxgl.Popup({
             
         });
 
-        map.on('click', 'trace', (e) => {
+        map.on('click', ['trace','admin'], (e) => {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
-            const coordinates = e.features[0].geometry.coordinates.slice();
+            
+            const coordinates = e.lngLat;
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
             // over the copy being pointed to.
@@ -77,6 +136,8 @@ body { margin: 0; padding: 0; }
 
             const description = e.features.map((feature) => {
                 let props = feature.properties;
+
+                if (props.length == 0) return "";
 
                 // Copy coordinates array.
                  return Object.keys(props).map((prop) => {
