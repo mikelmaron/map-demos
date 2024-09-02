@@ -20,12 +20,12 @@ body { margin: 0; padding: 0; }
 </style>
 <div id="map"></div>
 <script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjbG5rcTFjNWUxN3lwMm9tam9reHdpdTdhIn0.7akLYqZdmYqYrkf6Clzh2Q';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjbG1qaGh4ZG8wM2c5MmtxaWViMjllcmlpIn0.si9zhDe-1Z60IauAF5ufKg';
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mikelmaron/clo3bszrz00dk01qs8lge6wv1',
-        center: [-77.04, 38.907],
+        center: [-69.9312, 18.4861],
         zoom: 11.15
     });
 
@@ -44,20 +44,23 @@ body { margin: 0; padding: 0; }
     map.on('load', () => {
         // When a click event occurs on a feature in the places layer, open a popup at the
         // location of the feature, with description HTML from its properties.
-        map.on('click', 'result', (e) => {
-            // Copy coordinates array.
-            const coordinates = e.features[0].geometry.coordinates[0];
-            const description = e.features[0].properties.bio;
+        map.on('click',  (e) => {
 
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
+            const bbox = [
+                [e.point.x - 5, e.point.y - 5],
+                [e.point.x + 5, e.point.y + 5]
+            ];
+            // Find features intersecting the bounding box.
+            const selectedFeatures = map.queryRenderedFeatures(bbox, {
+                layers: ['result']
+            });
+
+            if (selectedFeatures.length == 0) return;
+
+            const description = selectedFeatures[0].properties.bio;
 
             new mapboxgl.Popup()
-                .setLngLat(coordinates)
+                .setLngLat(e.lngLat)
                 .setHTML(description)
                 .addTo(map);
         });
