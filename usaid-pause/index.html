@@ -7,29 +7,10 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <style>
-        body { margin: 0; padding: 0; }
-        #map { position: absolute; top: 0; bottom: 0; width: 70%; }
-        #infoPanel {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30%;
-            height: 100%;
-            background-color: white;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
-            display: none;
-        }
-        .infoPanel-header {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .infoPanel-content {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:opsz,wght@6..12,200&display=swap" rel="stylesheet">
+    <link href="map.css" rel="stylesheet" />
 </head>
 <body>
     <div id="map"></div>
@@ -37,15 +18,18 @@
         <div class="infoPanel-header" id="countryName"></div>
         <div class="infoPanel-content" id="countryDetails"></div>
     </div>
-
+    <div class="map-overlay">
+        <button id="global-button">global programs</button>
+      </div>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjbG5rcTFjNWUxN3lwMm9tam9reHdpdTdhIn0.7akLYqZdmYqYrkf6Clzh2Q';
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWxtYXJvbiIsImEiOiJjbG1qaGh4ZG8wM2c5MmtxaWViMjllcmlpIn0.si9zhDe-1Z60IauAF5ufKg';
 
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
+            style: 'mapbox://styles/mikelmaron/cm6jrhk44006e01s7bih43g2r',
             center: [0, 0],
-            zoom: 2
+            zoom: 2,
+            projection: 'globe'
         });
     </script>
     <script src="map.js"></script>
