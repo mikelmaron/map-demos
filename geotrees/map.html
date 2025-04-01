@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AGB Chave Globe Visualization</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 50%;
+        }
+        .mapboxgl-popup {
+            max-width: 300px;
+        }
+        .popup-content {
+            padding: 10px;
+        }
+        .popup-content h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .popup-content p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .popup-content .value {
+            font-weight: bold;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="legend">
+        <h3>AGB Chave (Mg/ha)</h3>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ff0000"></div>
+            <span>High (>400)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ff7f00"></div>
+            <span>Medium (200-400)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ffff00"></div>
+            <span>Low (<200)</span>
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZWFydGhyaXNlLWRldiIsImEiOiJjazFrMmRwM3Mwa2xkM2VxN3c5YnIxMXFiIn0.AzF5Q7NFuOAGZWkOr9n8CA';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-v9',
+            projection: 'globe',
+            center: [0, 0],
+            zoom: 1.5,
+            pitch: 0
+        });
+
+        let rotationInterval;
+        let isRotating = true;
+        let currentRotation = 0;
+
+        function startRotation() {
+            if (!isRotating) return;
+            
+            rotationInterval = setInterval(() => {
+                currentRotation -= 0.1;
+                map.easeTo({
+                    center: [currentRotation, 0],
+                    duration: 0
+                });
+            }, 50);
+        }
+
+        function stopRotation() {
+            clearInterval(rotationInterval);
+        }
+
+        // Handle user interaction
+        map.on('mousedown', () => {
+            isRotating = false;
+            stopRotation();
+        });
+
+        map.on('mouseup', () => {
+            if (map.getZoom() < 2) {
+                isRotating = true;
+                startRotation();
+            }
+        });
+
+        map.on('zoom', () => {
+            if (map.getZoom() >= 2) {
+                isRotating = false;
+                stopRotation();
+            } else if (!map.isMoving()) {
+                isRotating = true;
+                startRotation();
+            }
+        });
+
+        map.on('load', () => {
+            // Add atmosphere effect
+            map.setFog({
+                'horizon-blend': 0.02,
+                'star-intensity': 3,
+                'atmosphere-color': '#000000',
+                'atmosphere-horizon-blend': 0.2
+            });
+
+            // Load the GeoJSON data
+            fetch('enriched_points_with_tons.geojson')
+                .then(response => response.json())
+                .then(data => {
+                    // Add the source
+                    map.addSource('agb-points', {
+                        type: 'geojson',
+                        data: data
+                    });
+
+                    // Add the layer with filter for valid tons values
+                    map.addLayer({
+                        'id': 'agb-points',
+                        'type': 'circle',
+                        'source': 'agb-points',
+                        'filter': ['!=', ['get', 'tons'], null],
+                        'paint': {
+                            'circle-radius': [
+                                'interpolate',
+                                ['linear'],
+                                ['get', 'tons'],
+                                0, 1,
+                                500, 10
+                            ],
+                            'circle-color': [
+                                'interpolate',
+                                ['linear'],
+                                ['get', 'tons'],
+                                0, '#ffff00',
+                                200, '#ff7f00',
+                                400, '#ff0000'
+                            ],
+                            /* 'circle-color': '#ffffff', */
+                            'circle-opacity': 0.25,
+                            'circle-stroke-width': 0,
+                            'circle-stroke-color': '#ffffff'
+                        }
+                    });
+
+                    // Add click handler for popups
+                    map.on('click', 'agb-points', (e) => {
+                        const properties = e.features[0].properties;
+                        
+                        // Create popup content
+                        const popupContent = `
+                            <div class="popup-content">
+                                <h3>Plot Information</h3>
+                                <p><strong>ID:</strong> <span class="value">${properties.id}</span></p>
+                                <p><strong>Site Name:</strong> <span class="value">${properties.siteName || 'N/A'}</span></p>
+                                <p><strong>Country:</strong> <span class="value">${properties.country || 'N/A'}</span></p>
+                                <p><strong>AGB Chave:</strong> <span class="value">${properties['AGB Chave']}</span></p>
+                                <p><strong>AGB Feldpausch:</strong> <span class="value">${properties['AGB Feldpausch']}</span></p>
+                                <p><strong>AGB Local HD:</strong> <span class="value">${properties['AGB Local HD']}</span></p>
+                                <p><strong>Tree Density:</strong> <span class="value">${properties['Tree Density']}</span></p>
+                                <p><strong>Wood Density:</strong> <span class="value">${properties['Wood Density']}</span></p>
+                                <p><strong>H Lorey:</strong> <span class="value">${properties['H Lorey Chave']}</span></p>
+                                <p><strong>H Max:</strong> <span class="value">${properties['H Max Chave']}</span></p>
+                                <p><strong>Basal Area:</strong> <span class="value">${properties['Basal Area']}</span></p>
+                            </div>
+                        `;
+
+                        // Create and show popup
+                        new mapboxgl.Popup()
+                            .setLngLat(e.lngLat)
+                            .setHTML(popupContent)
+                            .addTo(map);
+
+                        // Stop rotation when popup is shown
+                        isRotating = false;
+                        stopRotation();
+                    });
+
+                    // Change cursor on hover
+                    map.on('mouseenter', 'agb-points', () => {
+                        map.getCanvas().style.cursor = 'pointer';
+                    });
+
+                    map.on('mouseleave', 'agb-points', () => {
+                        map.getCanvas().style.cursor = '';
+                    });
+
+                    // Start initial rotation
+                    startRotation();
+                });
+        });
+
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    </script>
+</body>
+</html> 
