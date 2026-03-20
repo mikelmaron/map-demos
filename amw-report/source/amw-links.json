@@ -1,0 +1,103 @@
+[
+  {
+    "url": "https://amazonminingwatch.org/"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=11.20&lng=-61.10&lat=6.40&areaId=GY13036_0&areaName=arau",
+    "lat": 6.4,
+    "lng": -61.1,
+    "zoom": 11.2,
+    "areaName": "arau",
+    "areaId": "GY13036_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=11.48&lng=-78.60&lat=-4.18&areaId=EC30704_0&areaName=tunants",
+    "lat": -4.18,
+    "lng": -78.6,
+    "zoom": 11.48,
+    "areaName": "tunants",
+    "areaId": "EC30704_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=12.34&lng=-77.62&lat=-1.09&areaId=EC30518_0&areaName=arajuno-chichico-rumi",
+    "lat": -1.09,
+    "lng": -77.62,
+    "zoom": 12.34,
+    "areaName": "arajuno-chichico-rumi",
+    "areaId": "EC30518_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=12.60&lng=-77.13&lat=0.26&areaId=EC30005_0&areaName=territorio-charip",
+    "lat": 0.26,
+    "lng": -77.13,
+    "zoom": 12.6,
+    "areaName": "territorio-charip",
+    "areaId": "EC30005_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=8.03&lng=-59.96&lat=-10.57&areaId=BR4201_0&areaName=aripuan",
+    "lat": -10.57,
+    "lng": -59.96,
+    "zoom": 8.03,
+    "areaName": "aripuan",
+    "areaId": "BR4201_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&yearStart=202504&yearEnd=202504&zoom=9.50&lng=-60.62&lat=5.93&areaId=GY13127_0&areaName=kamarang-keng",
+    "lat": 5.93,
+    "lng": -60.62,
+    "zoom": 9.5,
+    "areaName": "kamarang-keng",
+    "areaId": "GY13127_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=indigenous-territory&zoom=10.48&lng=-69.45&lat=-12.55&areaId=PE795_0&activeYear=202504&cumulative=true",
+    "lat": -12.55,
+    "lng": -69.45,
+    "zoom": 10.48,
+    "areaId": "PE795_0",
+    "areaType": "indigenous-territory"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=protected-area&yearStart=201800&yearEnd=202504&zoom=9.85&lng=-58.96&lat=-8.90&areaId=BR1346_0&areaName=parque-estadual-igarapes-do-juruena",
+    "lat": -8.9,
+    "lng": -58.96,
+    "zoom": 9.85,
+    "areaName": "parque-estadual-igarapes-do-juruena",
+    "areaId": "BR1346_0",
+    "areaType": "protected-area"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=protected-area&yearStart=202504&yearEnd=202504&zoom=8.67&lng=-69.51&lat=-12.81&areaId=PE46_0&areaName=tambopata",
+    "lat": -12.81,
+    "lng": -69.51,
+    "zoom": 8.67,
+    "areaName": "tambopata",
+    "areaId": "PE46_0",
+    "areaType": "protected-area"
+  },
+  {
+    "url": "https://amazonminingwatch.org/en?areaType=protected-area&yearStart=202504&yearEnd=202504&zoom=8.83&lng=-66.79&lat=3.84&areaId=VE55042_0&areaName=yapacana",
+    "lat": 3.84,
+    "lng": -66.79,
+    "zoom": 8.83,
+    "areaName": "yapacana",
+    "areaId": "VE55042_0",
+    "areaType": "protected-area"
+  },
+  {
+    "url": "https://www.maapprogram.org/gold-yapacana-venezuela/"
+  },
+  {
+    "url": "https://www.maapprogram.org/mining-colombia-amazon/"
+  }
+]
